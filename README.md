@@ -1,2 +1,2 @@
-# AI-OSTIS-assistant-OGUZOK-
+# AI-OSTIS-assistant-OGUZOK
 Йоу

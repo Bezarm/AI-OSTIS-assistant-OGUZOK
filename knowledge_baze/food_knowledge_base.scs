@@ -1,0 +1,536 @@
+/* ==========================================================================
+   БАЗА ЗНАНИЙ: ПРОДУКТЫ ПИТАНИЯ
+   ==========================================================================
+   SCs-онтология продуктов питания.
+   Иерархия строится через nrel_inclusion (включение классов).
+   Конкретные продукты — экземпляры классов через дугу принадлежности <-.
+   ========================================================================== */
+
+
+/* ==========================================================================
+   РАЗДЕЛ 1. ОТНОШЕНИЯ
+   ========================================================================== */
+
+nrel_used_in
+    <- sc_node_non_role_relation;
+    => nrel_main_idtf: [используется в*] (* <- lang_ru;; *);
+    => nrel_main_idtf: [used in*]         (* <- lang_en;; *);;
+
+nrel_inclusion
+    <- sc_node_non_role_relation;
+    => nrel_main_idtf: [включение*] (* <- lang_ru;; *);
+    => nrel_main_idtf: [inclusion*]  (* <- lang_en;; *);;
+
+
+/* ==========================================================================
+   РАЗДЕЛ 2. КОРНЕВОЙ КЛАСС И ВЕРХНЕУРОВНЕВЫЕ ПОДКЛАССЫ
+   ========================================================================== */
+
+food
+    <- sc_node_class;
+    => nrel_main_idtf: [продукт питания] (* <- lang_ru;; *);
+    => nrel_main_idtf: [food]             (* <- lang_en;; *);;
+
+plant_food
+    <- sc_node_class;
+    => nrel_main_idtf: [растительная пища] (* <- lang_ru;; *);
+    => nrel_main_idtf: [plant food]         (* <- lang_en;; *);
+    <= nrel_inclusion: food;;
+
+animal_food
+    <- sc_node_class;
+    => nrel_main_idtf: [животная пища] (* <- lang_ru;; *);
+    => nrel_main_idtf: [animal food]    (* <- lang_en;; *);
+    <= nrel_inclusion: food;;
+
+processed_food
+    <- sc_node_class;
+    => nrel_main_idtf: [переработанные продукты] (* <- lang_ru;; *);
+    => nrel_main_idtf: [processed food]           (* <- lang_en;; *);
+    <= nrel_inclusion: food;;
+
+
+/* ==========================================================================
+   РАЗДЕЛ 3. КАТЕГОРИИ РАСТИТЕЛЬНОЙ ПИЩИ
+   ========================================================================== */
+
+/* --- 3.1 Овощи --- */
+
+vegetables
+    <- sc_node_class;
+    => nrel_main_idtf: [овощи]      (* <- lang_ru;; *);
+    => nrel_main_idtf: [vegetables] (* <- lang_en;; *);
+    <= nrel_inclusion: plant_food;;
+
+potato          <- vegetables; => nrel_main_idtf: [картофель]          (* <- lang_ru;; *);;
+carrot          <- vegetables; => nrel_main_idtf: [морковь]            (* <- lang_ru;; *);;
+onion           <- vegetables; => nrel_main_idtf: [репчатый лук]       (* <- lang_ru;; *);;
+garlic          <- vegetables; => nrel_main_idtf: [чеснок]             (* <- lang_ru;; *);;
+tomato          <- vegetables; => nrel_main_idtf: [помидор]            (* <- lang_ru;; *);;
+cucumber        <- vegetables; => nrel_main_idtf: [огурец]             (* <- lang_ru;; *);;
+bell_pepper     <- vegetables; => nrel_main_idtf: [перец болгарский]   (* <- lang_ru;; *);;
+broccoli        <- vegetables; => nrel_main_idtf: [брокколи]           (* <- lang_ru;; *);;
+cauliflower     <- vegetables; => nrel_main_idtf: [цветная капуста]    (* <- lang_ru;; *);;
+spinach         <- vegetables; => nrel_main_idtf: [шпинат]             (* <- lang_ru;; *);;
+lettuce         <- vegetables; => nrel_main_idtf: [салат листовой]     (* <- lang_ru;; *);;
+celery          <- vegetables; => nrel_main_idtf: [сельдерей]          (* <- lang_ru;; *);;
+cabbage         <- vegetables; => nrel_main_idtf: [капуста белокочанная] (* <- lang_ru;; *);;
+corn            <- vegetables; => nrel_main_idtf: [кукуруза]           (* <- lang_ru;; *);;
+green_beans     <- vegetables; => nrel_main_idtf: [стручковая фасоль]  (* <- lang_ru;; *);;
+peas            <- vegetables; => nrel_main_idtf: [горох]              (* <- lang_ru;; *);;
+zucchini        <- vegetables; => nrel_main_idtf: [кабачок]            (* <- lang_ru;; *);;
+eggplant        <- vegetables; => nrel_main_idtf: [баклажан]           (* <- lang_ru;; *);;
+sweet_potato    <- vegetables; => nrel_main_idtf: [батат]              (* <- lang_ru;; *);;
+beet            <- vegetables; => nrel_main_idtf: [свёкла]             (* <- lang_ru;; *);;
+radish          <- vegetables; => nrel_main_idtf: [редис]              (* <- lang_ru;; *);;
+turnip          <- vegetables; => nrel_main_idtf: [репа]               (* <- lang_ru;; *);;
+pumpkin         <- vegetables; => nrel_main_idtf: [тыква]              (* <- lang_ru;; *);;
+squash          <- vegetables; => nrel_main_idtf: [патиссон]           (* <- lang_ru;; *);;
+artichoke       <- vegetables; => nrel_main_idtf: [артишок]            (* <- lang_ru;; *);;
+asparagus       <- vegetables; => nrel_main_idtf: [спаржа]             (* <- lang_ru;; *);;
+kale            <- vegetables; => nrel_main_idtf: [капуста кале]       (* <- lang_ru;; *);;
+leek            <- vegetables; => nrel_main_idtf: [порей]              (* <- lang_ru;; *);;
+brussels_sprouts <- vegetables; => nrel_main_idtf: [брюссельская капуста] (* <- lang_ru;; *);;
+fennel          <- vegetables; => nrel_main_idtf: [фенхель]            (* <- lang_ru;; *);;
+okra            <- vegetables; => nrel_main_idtf: [бамия]              (* <- lang_ru;; *);;
+parsnip         <- vegetables; => nrel_main_idtf: [пастернак]          (* <- lang_ru;; *);;
+rutabaga        <- vegetables; => nrel_main_idtf: [брюква]             (* <- lang_ru;; *);;
+shallot         <- vegetables; => nrel_main_idtf: [шалот]              (* <- lang_ru;; *);;
+bok_choy        <- vegetables; => nrel_main_idtf: [пак-чой]            (* <- lang_ru;; *);;
+watercress      <- vegetables; => nrel_main_idtf: [кресс-салат]        (* <- lang_ru;; *);;
+arugula         <- vegetables; => nrel_main_idtf: [руккола]            (* <- lang_ru;; *);;
+
+
+/* --- 3.2 Грибы (отдельный класс — не растения и не животные) --- */
+
+mushrooms_class
+    <- sc_node_class;
+    => nrel_main_idtf: [грибы]     (* <- lang_ru;; *);
+    => nrel_main_idtf: [mushrooms] (* <- lang_en;; *);
+    <= nrel_inclusion: food;;
+
+mushrooms        <- mushrooms_class; => nrel_main_idtf: [грибы (общее)]    (* <- lang_ru;; *);;
+champignons      <- mushrooms_class; => nrel_main_idtf: [шампиньоны]       (* <- lang_ru;; *);;
+portobello       <- mushrooms_class; => nrel_main_idtf: [портобелло]       (* <- lang_ru;; *);;
+shiitake         <- mushrooms_class; => nrel_main_idtf: [шиитаке]          (* <- lang_ru;; *);;
+oyster_mushrooms <- mushrooms_class; => nrel_main_idtf: [вёшенки]          (* <- lang_ru;; *);;
+
+
+/* --- 3.3 Фрукты и ягоды --- */
+
+fruits
+    <- sc_node_class;
+    => nrel_main_idtf: [фрукты и ягоды] (* <- lang_ru;; *);
+    => nrel_main_idtf: [fruits]          (* <- lang_en;; *);
+    <= nrel_inclusion: plant_food;;
+
+apple           <- fruits; => nrel_main_idtf: [яблоко]      (* <- lang_ru;; *);;
+banana          <- fruits; => nrel_main_idtf: [банан]        (* <- lang_ru;; *);;
+orange          <- fruits; => nrel_main_idtf: [апельсин]     (* <- lang_ru;; *);;
+lemon           <- fruits; => nrel_main_idtf: [лимон]        (* <- lang_ru;; *);;
+lime            <- fruits; => nrel_main_idtf: [лайм]         (* <- lang_ru;; *);;
+grape           <- fruits; => nrel_main_idtf: [виноград]     (* <- lang_ru;; *);;
+strawberry      <- fruits; => nrel_main_idtf: [клубника]     (* <- lang_ru;; *);;
+blueberry       <- fruits; => nrel_main_idtf: [черника]      (* <- lang_ru;; *);;
+raspberry       <- fruits; => nrel_main_idtf: [малина]       (* <- lang_ru;; *);;
+blackberry      <- fruits; => nrel_main_idtf: [ежевика]      (* <- lang_ru;; *);;
+cherry          <- fruits; => nrel_main_idtf: [вишня]        (* <- lang_ru;; *);;
+peach           <- fruits; => nrel_main_idtf: [персик]       (* <- lang_ru;; *);;
+pear            <- fruits; => nrel_main_idtf: [груша]        (* <- lang_ru;; *);;
+plum            <- fruits; => nrel_main_idtf: [слива]        (* <- lang_ru;; *);;
+mango           <- fruits; => nrel_main_idtf: [манго]        (* <- lang_ru;; *);;
+pineapple       <- fruits; => nrel_main_idtf: [ананас]       (* <- lang_ru;; *);;
+watermelon      <- fruits; => nrel_main_idtf: [арбуз]        (* <- lang_ru;; *);;
+cantaloupe      <- fruits; => nrel_main_idtf: [дыня]         (* <- lang_ru;; *);;
+kiwi            <- fruits; => nrel_main_idtf: [киви]         (* <- lang_ru;; *);;
+pomegranate     <- fruits; => nrel_main_idtf: [гранат]       (* <- lang_ru;; *);;
+fig             <- fruits; => nrel_main_idtf: [инжир]        (* <- lang_ru;; *);;
+date            <- fruits; => nrel_main_idtf: [финик]        (* <- lang_ru;; *);;
+coconut         <- fruits; => nrel_main_idtf: [кокос]        (* <- lang_ru;; *);;
+grapefruit      <- fruits; => nrel_main_idtf: [грейпфрут]   (* <- lang_ru;; *);;
+tangerine       <- fruits; => nrel_main_idtf: [мандарин]     (* <- lang_ru;; *);;
+cranberry       <- fruits; => nrel_main_idtf: [клюква]       (* <- lang_ru;; *);;
+apricot         <- fruits; => nrel_main_idtf: [абрикос]      (* <- lang_ru;; *);;
+avocado         <- fruits; => nrel_main_idtf: [авокадо]      (* <- lang_ru;; *);;
+papaya          <- fruits; => nrel_main_idtf: [папайя]       (* <- lang_ru;; *);;
+passion_fruit   <- fruits; => nrel_main_idtf: [маракуйя]     (* <- lang_ru;; *);;
+guava           <- fruits; => nrel_main_idtf: [гуава]        (* <- lang_ru;; *);;
+lychee          <- fruits; => nrel_main_idtf: [личи]         (* <- lang_ru;; *);;
+persimmon       <- fruits; => nrel_main_idtf: [хурма]        (* <- lang_ru;; *);;
+
+
+/* --- 3.4 Крупы и злаки --- */
+
+grains
+    <- sc_node_class;
+    => nrel_main_idtf: [крупы и злаки] (* <- lang_ru;; *);
+    => nrel_main_idtf: [grains]         (* <- lang_en;; *);
+    <= nrel_inclusion: plant_food;;
+
+rice            <- grains; => nrel_main_idtf: [рис]                 (* <- lang_ru;; *);;
+pasta           <- grains; => nrel_main_idtf: [паста]               (* <- lang_ru;; *);;
+bread           <- grains; => nrel_main_idtf: [хлеб]                (* <- lang_ru;; *);;
+flour           <- grains; => nrel_main_idtf: [мука]                (* <- lang_ru;; *);;
+oats            <- grains; => nrel_main_idtf: [овсянка]             (* <- lang_ru;; *);;
+quinoa          <- grains; => nrel_main_idtf: [киноа]               (* <- lang_ru;; *);;
+barley          <- grains; => nrel_main_idtf: [ячмень]              (* <- lang_ru;; *);;
+bulgur          <- grains; => nrel_main_idtf: [булгур]              (* <- lang_ru;; *);;
+couscous        <- grains; => nrel_main_idtf: [кускус]              (* <- lang_ru;; *);;
+millet          <- grains; => nrel_main_idtf: [пшено]               (* <- lang_ru;; *);;
+buckwheat       <- grains; => nrel_main_idtf: [гречка]              (* <- lang_ru;; *);;
+cornmeal        <- grains; => nrel_main_idtf: [кукурузная мука]     (* <- lang_ru;; *);;
+cereal          <- grains; => nrel_main_idtf: [хлопья]              (* <- lang_ru;; *);;
+tortilla        <- grains; => nrel_main_idtf: [тортилья]            (* <- lang_ru;; *);;
+noodles         <- grains; => nrel_main_idtf: [лапша]               (* <- lang_ru;; *);;
+spaghetti       <- grains; => nrel_main_idtf: [спагетти]            (* <- lang_ru;; *);;
+macaroni        <- grains; => nrel_main_idtf: [макароны]            (* <- lang_ru;; *);;
+risotto_rice    <- grains; => nrel_main_idtf: [рис для ризотто]     (* <- lang_ru;; *);;
+
+
+/* --- 3.5 Специи и пряности --- */
+
+spices
+    <- sc_node_class;
+    => nrel_main_idtf: [специи и пряности] (* <- lang_ru;; *);
+    => nrel_main_idtf: [spices]             (* <- lang_en;; *);
+    <= nrel_inclusion: plant_food;;
+
+salt            <- spices; => nrel_main_idtf: [соль]              (* <- lang_ru;; *);;
+black_pepper    <- spices; => nrel_main_idtf: [чёрный перец]      (* <- lang_ru;; *);;
+white_pepper    <- spices; => nrel_main_idtf: [белый перец]       (* <- lang_ru;; *);;
+cayenne         <- spices; => nrel_main_idtf: [кайенский перец]   (* <- lang_ru;; *);;
+chili_powder    <- spices; => nrel_main_idtf: [перец чили]        (* <- lang_ru;; *);;
+paprika         <- spices; => nrel_main_idtf: [паприка]           (* <- lang_ru;; *);;
+smoked_paprika  <- spices; => nrel_main_idtf: [копчёная паприка]  (* <- lang_ru;; *);;
+garlic_powder   <- spices; => nrel_main_idtf: [чесночный порошок] (* <- lang_ru;; *);;
+onion_powder    <- spices; => nrel_main_idtf: [луковый порошок]   (* <- lang_ru;; *);;
+cumin           <- spices; => nrel_main_idtf: [кумин]             (* <- lang_ru;; *);;
+coriander       <- spices; => nrel_main_idtf: [кориандр]          (* <- lang_ru;; *);;
+turmeric        <- spices; => nrel_main_idtf: [куркума]           (* <- lang_ru;; *);;
+cinnamon        <- spices; => nrel_main_idtf: [корица]            (* <- lang_ru;; *);;
+ginger          <- spices; => nrel_main_idtf: [имбирь]            (* <- lang_ru;; *);;
+nutmeg          <- spices; => nrel_main_idtf: [мускатный орех]    (* <- lang_ru;; *);;
+cloves          <- spices; => nrel_main_idtf: [гвоздика]          (* <- lang_ru;; *);;
+allspice        <- spices; => nrel_main_idtf: [душистый перец]    (* <- lang_ru;; *);;
+cardamom        <- spices; => nrel_main_idtf: [кардамон]          (* <- lang_ru;; *);;
+saffron         <- spices; => nrel_main_idtf: [шафран]            (* <- lang_ru;; *);;
+mustard_powder  <- spices; => nrel_main_idtf: [горчичный порошок] (* <- lang_ru;; *);;
+curry_powder    <- spices; => nrel_main_idtf: [карри]             (* <- lang_ru;; *);;
+vanilla         <- spices; => nrel_main_idtf: [ваниль]            (* <- lang_ru;; *);;
+bay_leaf        <- spices; => nrel_main_idtf: [лавровый лист]     (* <- lang_ru;; *);;
+
+
+/* --- 3.6 Свежие травы --- */
+
+herbs
+    <- sc_node_class;
+    => nrel_main_idtf: [свежие травы] (* <- lang_ru;; *);
+    => nrel_main_idtf: [herbs]         (* <- lang_en;; *);
+    <= nrel_inclusion: plant_food;;
+
+oregano         <- herbs; => nrel_main_idtf: [орегано]   (* <- lang_ru;; *);;
+thyme           <- herbs; => nrel_main_idtf: [тимьян]    (* <- lang_ru;; *);;
+rosemary        <- herbs; => nrel_main_idtf: [розмарин]  (* <- lang_ru;; *);;
+dill            <- herbs; => nrel_main_idtf: [укроп]     (* <- lang_ru;; *);;
+parsley         <- herbs; => nrel_main_idtf: [петрушка]  (* <- lang_ru;; *);;
+cilantro        <- herbs; => nrel_main_idtf: [кинза]     (* <- lang_ru;; *);;
+mint            <- herbs; => nrel_main_idtf: [мята]      (* <- lang_ru;; *);;
+sage            <- herbs; => nrel_main_idtf: [шалфей]    (* <- lang_ru;; *);;
+basil           <- herbs; => nrel_main_idtf: [базилик]   (* <- lang_ru;; *);;
+tarragon        <- herbs; => nrel_main_idtf: [эстрагон]  (* <- lang_ru;; *);;
+
+
+/* --- 3.7 Масла --- */
+
+oils
+    <- sc_node_class;
+    => nrel_main_idtf: [масла растительные] (* <- lang_ru;; *);
+    => nrel_main_idtf: [oils]               (* <- lang_en;; *);
+    <= nrel_inclusion: plant_food;;
+
+olive_oil       <- oils; => nrel_main_idtf: [оливковое масло]    (* <- lang_ru;; *);;
+vegetable_oil   <- oils; => nrel_main_idtf: [растительное масло] (* <- lang_ru;; *);;
+coconut_oil     <- oils; => nrel_main_idtf: [кокосовое масло]    (* <- lang_ru;; *);;
+sesame_oil      <- oils; => nrel_main_idtf: [кунжутное масло]    (* <- lang_ru;; *);;
+avocado_oil     <- oils; => nrel_main_idtf: [масло авокадо]      (* <- lang_ru;; *);;
+flaxseed_oil    <- oils; => nrel_main_idtf: [льняное масло]      (* <- lang_ru;; *);;
+walnut_oil      <- oils; => nrel_main_idtf: [масло грецкого ореха] (* <- lang_ru;; *);;
+
+
+/* --- 3.8 Уксусы --- */
+
+vinegars
+    <- sc_node_class;
+    => nrel_main_idtf: [уксусы]   (* <- lang_ru;; *);
+    => nrel_main_idtf: [vinegars] (* <- lang_en;; *);
+    <= nrel_inclusion: plant_food;;
+
+white_vinegar       <- vinegars; => nrel_main_idtf: [белый уксус]          (* <- lang_ru;; *);;
+apple_cider_vinegar <- vinegars; => nrel_main_idtf: [яблочный уксус]       (* <- lang_ru;; *);;
+balsamic_vinegar    <- vinegars; => nrel_main_idtf: [бальзамический уксус]  (* <- lang_ru;; *);;
+rice_vinegar        <- vinegars; => nrel_main_idtf: [рисовый уксус]         (* <- lang_ru;; *);;
+red_wine_vinegar    <- vinegars; => nrel_main_idtf: [красный винный уксус]  (* <- lang_ru;; *);;
+white_wine_vinegar  <- vinegars; => nrel_main_idtf: [белый винный уксус]    (* <- lang_ru;; *);;
+
+
+/* --- 3.9 Орехи и семена --- */
+
+nuts
+    <- sc_node_class;
+    => nrel_main_idtf: [орехи и семена] (* <- lang_ru;; *);
+    => nrel_main_idtf: [nuts and seeds] (* <- lang_en;; *);
+    <= nrel_inclusion: plant_food;;
+
+almonds         <- nuts; => nrel_main_idtf: [миндаль]              (* <- lang_ru;; *);;
+walnuts         <- nuts; => nrel_main_idtf: [грецкие орехи]        (* <- lang_ru;; *);;
+cashews         <- nuts; => nrel_main_idtf: [кешью]                (* <- lang_ru;; *);;
+pecans          <- nuts; => nrel_main_idtf: [пекан]                (* <- lang_ru;; *);;
+pistachios      <- nuts; => nrel_main_idtf: [фисташки]             (* <- lang_ru;; *);;
+hazelnuts       <- nuts; => nrel_main_idtf: [фундук]               (* <- lang_ru;; *);;
+pine_nuts       <- nuts; => nrel_main_idtf: [кедровые орехи]       (* <- lang_ru;; *);;
+peanuts         <- nuts; => nrel_main_idtf: [арахис]               (* <- lang_ru;; *);;
+sunflower_seeds <- nuts; => nrel_main_idtf: [семечки подсолнуха]   (* <- lang_ru;; *);;
+pumpkin_seeds   <- nuts; => nrel_main_idtf: [тыквенные семечки]    (* <- lang_ru;; *);;
+sesame_seeds    <- nuts; => nrel_main_idtf: [кунжут]               (* <- lang_ru;; *);;
+flaxseeds       <- nuts; => nrel_main_idtf: [семена льна]          (* <- lang_ru;; *);;
+chia_seeds      <- nuts; => nrel_main_idtf: [семена чиа]           (* <- lang_ru;; *);;
+hemp_seeds      <- nuts; => nrel_main_idtf: [конопляные семена]    (* <- lang_ru;; *);;
+macadamia       <- nuts; => nrel_main_idtf: [макадамия]            (* <- lang_ru;; *);;
+brazil_nuts     <- nuts; => nrel_main_idtf: [бразильский орех]     (* <- lang_ru;; *);;
+
+
+/* ==========================================================================
+   РАЗДЕЛ 4. КАТЕГОРИИ ЖИВОТНОЙ ПИЩИ
+   ========================================================================== */
+
+/* --- 4.1 Мясо --- */
+
+meat
+    <- sc_node_class;
+    => nrel_main_idtf: [мясо] (* <- lang_ru;; *);
+    => nrel_main_idtf: [meat] (* <- lang_en;; *);
+    <= nrel_inclusion: animal_food;;
+
+beef            <- meat; => nrel_main_idtf: [говядина]       (* <- lang_ru;; *);;
+pork            <- meat; => nrel_main_idtf: [свинина]        (* <- lang_ru;; *);;
+lamb            <- meat; => nrel_main_idtf: [баранина]       (* <- lang_ru;; *);;
+veal            <- meat; => nrel_main_idtf: [телятина]       (* <- lang_ru;; *);;
+bacon           <- meat; => nrel_main_idtf: [бекон]          (* <- lang_ru;; *);;
+ham             <- meat; => nrel_main_idtf: [ветчина]        (* <- lang_ru;; *);;
+sausage         <- meat; => nrel_main_idtf: [колбаса]        (* <- lang_ru;; *);;
+pepperoni       <- meat; => nrel_main_idtf: [пепперони]      (* <- lang_ru;; *);;
+salami          <- meat; => nrel_main_idtf: [салями]         (* <- lang_ru;; *);;
+prosciutto      <- meat; => nrel_main_idtf: [прошутто]       (* <- lang_ru;; *);;
+ground_beef     <- meat; => nrel_main_idtf: [фарш говяжий]   (* <- lang_ru;; *);;
+ground_pork     <- meat; => nrel_main_idtf: [фарш свиной]    (* <- lang_ru;; *);;
+ground_lamb     <- meat; => nrel_main_idtf: [фарш бараний]   (* <- lang_ru;; *);;
+steak           <- meat; => nrel_main_idtf: [стейк]          (* <- lang_ru;; *);;
+ribs            <- meat; => nrel_main_idtf: [рёбра]          (* <- lang_ru;; *);;
+brisket         <- meat; => nrel_main_idtf: [грудинка]       (* <- lang_ru;; *);;
+shank           <- meat; => nrel_main_idtf: [голень]         (* <- lang_ru;; *);;
+tenderloin      <- meat; => nrel_main_idtf: [вырезка]        (* <- lang_ru;; *);;
+
+
+/* --- 4.2 Птица --- */
+
+poultry
+    <- sc_node_class;
+    => nrel_main_idtf: [птица]   (* <- lang_ru;; *);
+    => nrel_main_idtf: [poultry] (* <- lang_en;; *);
+    <= nrel_inclusion: animal_food;;
+
+chicken         <- poultry; => nrel_main_idtf: [курица]           (* <- lang_ru;; *);;
+chicken_breast  <- poultry; => nrel_main_idtf: [куриная грудка]   (* <- lang_ru;; *);;
+chicken_thigh   <- poultry; => nrel_main_idtf: [куриное бедро]    (* <- lang_ru;; *);;
+chicken_wing    <- poultry; => nrel_main_idtf: [куриное крыло]    (* <- lang_ru;; *);;
+turkey          <- poultry; => nrel_main_idtf: [индейка]          (* <- lang_ru;; *);;
+duck            <- poultry; => nrel_main_idtf: [утка]             (* <- lang_ru;; *);;
+goose           <- poultry; => nrel_main_idtf: [гусь]             (* <- lang_ru;; *);;
+quail           <- poultry; => nrel_main_idtf: [перепел]          (* <- lang_ru;; *);;
+ground_chicken  <- poultry; => nrel_main_idtf: [фарш куриный]     (* <- lang_ru;; *);;
+ground_turkey   <- poultry; => nrel_main_idtf: [фарш индюшачий]   (* <- lang_ru;; *);;
+
+
+/* --- 4.3 Морепродукты --- */
+
+seafood
+    <- sc_node_class;
+    => nrel_main_idtf: [морепродукты] (* <- lang_ru;; *);
+    => nrel_main_idtf: [seafood]       (* <- lang_en;; *);
+    <= nrel_inclusion: animal_food;;
+
+salmon          <- seafood; => nrel_main_idtf: [лосось]          (* <- lang_ru;; *);;
+tuna            <- seafood; => nrel_main_idtf: [тунец]           (* <- lang_ru;; *);;
+shrimp          <- seafood; => nrel_main_idtf: [креветки]        (* <- lang_ru;; *);;
+crab            <- seafood; => nrel_main_idtf: [краб]            (* <- lang_ru;; *);;
+lobster         <- seafood; => nrel_main_idtf: [омар]            (* <- lang_ru;; *);;
+cod             <- seafood; => nrel_main_idtf: [треска]          (* <- lang_ru;; *);;
+tilapia         <- seafood; => nrel_main_idtf: [тиляпия]         (* <- lang_ru;; *);;
+halibut         <- seafood; => nrel_main_idtf: [палтус]          (* <- lang_ru;; *);;
+trout           <- seafood; => nrel_main_idtf: [форель]          (* <- lang_ru;; *);;
+sardines        <- seafood; => nrel_main_idtf: [сардины]         (* <- lang_ru;; *);;
+anchovies       <- seafood; => nrel_main_idtf: [анчоусы]         (* <- lang_ru;; *);;
+mussels         <- seafood; => nrel_main_idtf: [мидии]           (* <- lang_ru;; *);;
+clams           <- seafood; => nrel_main_idtf: [моллюски]        (* <- lang_ru;; *);;
+oysters         <- seafood; => nrel_main_idtf: [устрицы]         (* <- lang_ru;; *);;
+scallops        <- seafood; => nrel_main_idtf: [гребешки]        (* <- lang_ru;; *);;
+squid           <- seafood; => nrel_main_idtf: [кальмар]         (* <- lang_ru;; *);;
+octopus         <- seafood; => nrel_main_idtf: [осьминог]        (* <- lang_ru;; *);;
+catfish         <- seafood; => nrel_main_idtf: [сом]             (* <- lang_ru;; *);;
+herring         <- seafood; => nrel_main_idtf: [сельдь]          (* <- lang_ru;; *);;
+mackerel        <- seafood; => nrel_main_idtf: [скумбрия]        (* <- lang_ru;; *);;
+sea_bass        <- seafood; => nrel_main_idtf: [морской окунь]   (* <- lang_ru;; *);;
+swordfish       <- seafood; => nrel_main_idtf: [рыба-меч]        (* <- lang_ru;; *);;
+squid_rings     <- seafood; => nrel_main_idtf: [кольца кальмара] (* <- lang_ru;; *);;
+
+
+/* --- 4.4 Молочные продукты --- */
+
+dairy
+    <- sc_node_class;
+    => nrel_main_idtf: [молочные продукты] (* <- lang_ru;; *);
+    => nrel_main_idtf: [dairy]             (* <- lang_en;; *);
+    <= nrel_inclusion: animal_food;;
+
+milk            <- dairy; => nrel_main_idtf: [молоко]             (* <- lang_ru;; *);;
+butter          <- dairy; => nrel_main_idtf: [масло сливочное]    (* <- lang_ru;; *);;
+cream           <- dairy; => nrel_main_idtf: [сливки]             (* <- lang_ru;; *);;
+heavy_cream     <- dairy; => nrel_main_idtf: [жирные сливки]      (* <- lang_ru;; *);;
+half_and_half   <- dairy; => nrel_main_idtf: [полусливки]         (* <- lang_ru;; *);;
+buttermilk      <- dairy; => nrel_main_idtf: [пахта]              (* <- lang_ru;; *);;
+whey            <- dairy; => nrel_main_idtf: [сыворотка]          (* <- lang_ru;; *);;
+sour_cream      <- dairy; => nrel_main_idtf: [сметана]            (* <- lang_ru;; *);;
+yogurt          <- dairy; => nrel_main_idtf: [йогурт]             (* <- lang_ru;; *);;
+cottage_cheese  <- dairy; => nrel_main_idtf: [творог]             (* <- lang_ru;; *);;
+cheese          <- dairy; => nrel_main_idtf: [сыр]                (* <- lang_ru;; *);;
+cheddar         <- dairy; => nrel_main_idtf: [чеддер]             (* <- lang_ru;; *);;
+mozzarella      <- dairy; => nrel_main_idtf: [моцарелла]          (* <- lang_ru;; *);;
+parmesan        <- dairy; => nrel_main_idtf: [пармезан]           (* <- lang_ru;; *);;
+ricotta         <- dairy; => nrel_main_idtf: [рикотта]            (* <- lang_ru;; *);;
+cream_cheese    <- dairy; => nrel_main_idtf: [сливочный сыр]      (* <- lang_ru;; *);;
+gouda           <- dairy; => nrel_main_idtf: [гауда]              (* <- lang_ru;; *);;
+brie            <- dairy; => nrel_main_idtf: [бри]                (* <- lang_ru;; *);;
+feta            <- dairy; => nrel_main_idtf: [фета]               (* <- lang_ru;; *);;
+goat_cheese     <- dairy; => nrel_main_idtf: [козий сыр]          (* <- lang_ru;; *);;
+swiss_cheese    <- dairy; => nrel_main_idtf: [швейцарский сыр]    (* <- lang_ru;; *);;
+provolone       <- dairy; => nrel_main_idtf: [проволоне]          (* <- lang_ru;; *);;
+mascarpone      <- dairy; => nrel_main_idtf: [маскарпоне]         (* <- lang_ru;; *);;
+
+
+/* --- 4.5 Яйца (отдельная категория) --- */
+
+eggs_class
+    <- sc_node_class;
+    => nrel_main_idtf: [яйца] (* <- lang_ru;; *);
+    => nrel_main_idtf: [eggs] (* <- lang_en;; *);
+    <= nrel_inclusion: animal_food;;
+
+egg             <- eggs_class; => nrel_main_idtf: [куриное яйцо]   (* <- lang_ru;; *);;
+quail_egg       <- eggs_class; => nrel_main_idtf: [перепелиное яйцо] (* <- lang_ru;; *);;
+duck_egg        <- eggs_class; => nrel_main_idtf: [утиное яйцо]    (* <- lang_ru;; *);;
+
+
+/* ==========================================================================
+   РАЗДЕЛ 5. КАТЕГОРИИ ПЕРЕРАБОТАННЫХ ПРОДУКТОВ
+   ========================================================================== */
+
+/* --- 5.1 Выпечка и кондитерские ингредиенты --- */
+
+baking
+    <- sc_node_class;
+    => nrel_main_idtf: [ингредиенты для выпечки] (* <- lang_ru;; *);
+    => nrel_main_idtf: [baking ingredients]       (* <- lang_en;; *);
+    <= nrel_inclusion: processed_food;;
+
+sugar           <- baking; => nrel_main_idtf: [сахар]              (* <- lang_ru;; *);;
+brown_sugar     <- baking; => nrel_main_idtf: [тростниковый сахар] (* <- lang_ru;; *);;
+powdered_sugar  <- baking; => nrel_main_idtf: [сахарная пудра]     (* <- lang_ru;; *);;
+baking_powder   <- baking; => nrel_main_idtf: [разрыхлитель]       (* <- lang_ru;; *);;
+baking_soda     <- baking; => nrel_main_idtf: [сода пищевая]       (* <- lang_ru;; *);;
+yeast           <- baking; => nrel_main_idtf: [дрожжи]             (* <- lang_ru;; *);;
+cocoa_powder    <- baking; => nrel_main_idtf: [какао-порошок]      (* <- lang_ru;; *);;
+chocolate       <- baking; => nrel_main_idtf: [шоколад]            (* <- lang_ru;; *);;
+chocolate_chips <- baking; => nrel_main_idtf: [шоколадная крошка]  (* <- lang_ru;; *);;
+vanilla_extract <- baking; => nrel_main_idtf: [ванильный экстракт] (* <- lang_ru;; *);;
+cornstarch      <- baking; => nrel_main_idtf: [кукурузный крахмал] (* <- lang_ru;; *);;
+honey           <- baking; => nrel_main_idtf: [мёд]                (* <- lang_ru;; *);;
+maple_syrup     <- baking; => nrel_main_idtf: [кленовый сироп]     (* <- lang_ru;; *);;
+molasses        <- baking; => nrel_main_idtf: [патока]             (* <- lang_ru;; *);;
+gelatin         <- baking; => nrel_main_idtf: [желатин]            (* <- lang_ru;; *);;
+cream_of_tartar <- baking; => nrel_main_idtf: [винный камень]      (* <- lang_ru;; *);;
+
+
+/* --- 5.2 Кондименты и соусы --- */
+
+condiments
+    <- sc_node_class;
+    => nrel_main_idtf: [кондименты и соусы]    (* <- lang_ru;; *);
+    => nrel_main_idtf: [condiments and sauces] (* <- lang_en;; *);
+    <= nrel_inclusion: processed_food;;
+
+soy_sauce       <- condiments; => nrel_main_idtf: [соевый соус]        (* <- lang_ru;; *);;
+tomato_sauce    <- condiments; => nrel_main_idtf: [томатный соус]      (* <- lang_ru;; *);;
+tomato_paste    <- condiments; => nrel_main_idtf: [томатная паста]     (* <- lang_ru;; *);;
+ketchup         <- condiments; => nrel_main_idtf: [кетчуп]             (* <- lang_ru;; *);;
+mustard         <- condiments; => nrel_main_idtf: [горчица]            (* <- lang_ru;; *);;
+mayonnaise      <- condiments; => nrel_main_idtf: [майонез]            (* <- lang_ru;; *);;
+hot_sauce       <- condiments; => nrel_main_idtf: [острый соус]        (* <- lang_ru;; *);;
+worcestershire  <- condiments; => nrel_main_idtf: [вустерширский соус] (* <- lang_ru;; *);;
+fish_sauce      <- condiments; => nrel_main_idtf: [рыбный соус]        (* <- lang_ru;; *);;
+teriyaki        <- condiments; => nrel_main_idtf: [терияки]            (* <- lang_ru;; *);;
+bbq_sauce       <- condiments; => nrel_main_idtf: [соус барбекю]       (* <- lang_ru;; *);;
+ranch           <- condiments; => nrel_main_idtf: [соус рэнч]          (* <- lang_ru;; *);;
+pesto           <- condiments; => nrel_main_idtf: [песто]              (* <- lang_ru;; *);;
+sriracha        <- condiments; => nrel_main_idtf: [срирача]            (* <- lang_ru;; *);;
+hoisin          <- condiments; => nrel_main_idtf: [соус хойсин]        (* <- lang_ru;; *);;
+tahini          <- condiments; => nrel_main_idtf: [тахини]             (* <- lang_ru;; *);;
+peanut_butter   <- condiments; => nrel_main_idtf: [арахисовая паста]   (* <- lang_ru;; *);;
+nutella         <- condiments; => nrel_main_idtf: [нутелла]            (* <- lang_ru;; *);;
+jam             <- condiments; => nrel_main_idtf: [варенье]            (* <- lang_ru;; *);;
+hummus          <- condiments; => nrel_main_idtf: [хумус]              (* <- lang_ru;; *);;
+salsa           <- condiments; => nrel_main_idtf: [сальса]             (* <- lang_ru;; *);;
+guacamole       <- condiments; => nrel_main_idtf: [гуакамоле]          (* <- lang_ru;; *);;
+
+
+/* --- 5.3 Консервированные продукты --- */
+
+canned
+    <- sc_node_class;
+    => nrel_main_idtf: [консервированные продукты] (* <- lang_ru;; *);
+    => nrel_main_idtf: [canned goods]               (* <- lang_en;; *);
+    <= nrel_inclusion: processed_food;;
+
+canned_tomatoes  <- canned; => nrel_main_idtf: [консервированные помидоры]   (* <- lang_ru;; *);;
+canned_beans     <- canned; => nrel_main_idtf: [консервированная фасоль]     (* <- lang_ru;; *);;
+canned_corn      <- canned; => nrel_main_idtf: [консервированная кукуруза]   (* <- lang_ru;; *);;
+canned_tuna      <- canned; => nrel_main_idtf: [консервированный тунец]      (* <- lang_ru;; *);;
+canned_salmon    <- canned; => nrel_main_idtf: [консервированный лосось]     (* <- lang_ru;; *);;
+chicken_broth    <- canned; => nrel_main_idtf: [куриный бульон]              (* <- lang_ru;; *);;
+beef_broth       <- canned; => nrel_main_idtf: [говяжий бульон]              (* <- lang_ru;; *);;
+vegetable_broth  <- canned; => nrel_main_idtf: [овощной бульон]              (* <- lang_ru;; *);;
+coconut_milk     <- canned; => nrel_main_idtf: [кокосовое молоко]            (* <- lang_ru;; *);;
+evaporated_milk  <- canned; => nrel_main_idtf: [сгущённое молоко]            (* <- lang_ru;; *);;
+condensed_milk   <- canned; => nrel_main_idtf: [сгущённое молоко сладкое]    (* <- lang_ru;; *);;
+canned_peaches   <- canned; => nrel_main_idtf: [консервированные персики]    (* <- lang_ru;; *);;
+canned_pineapple <- canned; => nrel_main_idtf: [консервированный ананас]     (* <- lang_ru;; *);;
+canned_olives    <- canned; => nrel_main_idtf: [консервированные оливки]     (* <- lang_ru;; *);;
+canned_chickpeas <- canned; => nrel_main_idtf: [консервированный нут]        (* <- lang_ru;; *);;
+
+
+/* --- 5.4 Напитки --- */
+
+beverages
+    <- sc_node_class;
+    => nrel_main_idtf: [напитки]   (* <- lang_ru;; *);
+    => nrel_main_idtf: [beverages] (* <- lang_en;; *);
+    <= nrel_inclusion: processed_food;;
+
+water           <- beverages; => nrel_main_idtf: [вода]              (* <- lang_ru;; *);;
+coffee          <- beverages; => nrel_main_idtf: [кофе]              (* <- lang_ru;; *);;
+tea             <- beverages; => nrel_main_idtf: [чай]               (* <- lang_ru;; *);;
+juice           <- beverages; => nrel_main_idtf: [сок]               (* <- lang_ru;; *);;
+orange_juice    <- beverages; => nrel_main_idtf: [апельсиновый сок]  (* <- lang_ru;; *);;
+wine            <- beverages; => nrel_main_idtf: [вино]              (* <- lang_ru;; *);;
+beer            <- beverages; => nrel_main_idtf: [пиво]              (* <- lang_ru;; *);;
+soda            <- beverages; => nrel_main_idtf: [газировка]         (* <- lang_ru;; *);;
+broth_drink     <- beverages; => nrel_main_idtf: [бульон питьевой]   (* <- lang_ru;; *);;

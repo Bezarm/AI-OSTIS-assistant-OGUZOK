@@ -38,6 +38,8 @@ subject_domain_of_cooking
    cheese;
    apples;
    pelmeni;
+   ground_beef;
+   sour_cream;
 
 -> rrel_explored_relation:
    nrel_time_of_cooking;

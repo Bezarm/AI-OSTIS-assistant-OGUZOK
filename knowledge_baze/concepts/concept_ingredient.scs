@@ -30,6 +30,10 @@ concept_ingredient
     cheese;
     apples;
     pelmeni;
+    sour_cream;
+    macarones;
+    sour_cream;
+    ground_beef;
 
 => nrel_note:
     [Ингредиент — это составная часть блюда, используемая для приготовления пищи.

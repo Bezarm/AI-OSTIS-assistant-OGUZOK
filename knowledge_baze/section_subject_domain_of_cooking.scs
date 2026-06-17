@@ -38,8 +38,14 @@ subject_domain_of_cooking
    cheese;
    apples;
    pelmeni;
+<<<<<<< HEAD
+   macarones;
+   sour_cream;
+   ground_beef;
+=======
    ground_beef;
    sour_cream;
+>>>>>>> main
 
 -> rrel_explored_relation:
    nrel_time_of_cooking;

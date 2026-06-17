@@ -51,13 +51,6 @@ fried_potato
         => nrel_type_of_unit: [ст. ложки] (* <- lang_ru;; *);;
 
     *);
-    salt
-    (*
-        <- concept_ingredient;;
-        => nrel_main_idtf: [соль] (* <- lang_ru;; *);;
-        => nrel_amount: [по вкусу];;
-
-    *);
     onion
     (*
         <- concept_ingredient;;

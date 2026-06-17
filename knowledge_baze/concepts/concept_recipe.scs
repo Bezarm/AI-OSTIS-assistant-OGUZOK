@@ -1,0 +1,23 @@
+concept_recipe
+
+<- sc_node_class;
+
+=> nrel_main_idtf:
+	[рецепт]
+	(* <- lang_ru;; *);
+    [recipe]
+	(* <- lang_en;; *);
+
+=> nrel_note:
+    [Рецепт — это набор инструкций, описывающих процесс приготовления блюда.
+    Обычно включает в себя список ингредиентов, их количество и последовательность действий для достижения конечного результата — готового блюда.]
+	(* <- lang_ru;; *);;
+
+<= nrel_first_domain:
+    nrel_time_of_cooking;
+    nrel_dificulty_of_cooking;
+    nrel_recipe_rating;
+    nrel_calorific_value;
+    nrel_needed_ingredients;
+    nrel_count_of_portions;
+    nrel_recipe_step_description;;

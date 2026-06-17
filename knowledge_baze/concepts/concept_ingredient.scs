@@ -1,0 +1,43 @@
+concept_ingredient
+
+<- sc_node_class;
+
+=> nrel_main_idtf:
+	[ингредиент]
+	(* <- lang_ru;; *);
+    [ingredient]
+	(* <- lang_en;; *);
+
+=> nrel_inclusion:
+    concept_food;
+    eggs;
+    potapo;
+    onion;
+    sugar;
+    carrot;
+    vegetable_oil;
+    flour;
+    butter;
+    milk;
+    pasta;
+    rice;
+    garlic;
+    cucumber;
+    tomato;
+    buckwheat;
+    cabbage;
+    bread;
+    cheese;
+    apples;
+    pelmeni;
+
+=> nrel_note:
+    [Ингредиент — это составная часть блюда, используемая для приготовления пищи.
+    Может быть как натуральным продуктом, так и добавкой. ]
+	(* <- lang_ru;; *);;
+
+nrel_amount
+=> nrel_first_domain:
+    concept_ingredient;
+<= nrel_second_domain:
+    nrel_type_of_unit;;

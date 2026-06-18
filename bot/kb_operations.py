@@ -23,6 +23,23 @@ class Operator():
             generate_elements_by_scs([scs])
             with open(self.userpath/f'{tg_id}.scs', 'w') as file:
                 file.write(scs)
+    
+    def add_message(self, tg_id, text):
+        user = ScKeynodes[str(tg_id)]
+        bound = ScKeynodes['nrel_message_author']
+        construction = ScConstruction()
+        construction.generate_link(sc_type.CONST_NODE_LINK, ScLinkContent(text, ScLinkContentType.STRING), '_message')
+        message_addr = generate_elements(construction)
+        template = ScTemplate()
+        template.quintuple(
+            message_addr[0],
+            sc_type.VAR_COMMON_ARC,
+            user,
+            sc_type.VAR_PERM_POS_ARC,
+            bound
+        )
+        result = generate_by_template(template)
+        
 
 class Connector():
     def safe_connect(self, url):

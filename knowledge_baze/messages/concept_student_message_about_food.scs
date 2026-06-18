@@ -1,0 +1,27 @@
+@food_reply_template = [Замечательно! Скажи, какие у тебя есть ингредиенты, и подберём тебе рецепт!];;
+
+@food_production = {
+  rrel_reply_template: {
+    rrel_message_template: @food_reply_template
+  }
+};;
+@food_production <- nrel_reply_production;;
+
+concept_student_message_about_food
+<- sc_node_class;
+=> nrel_main_idtf: [класс сообщений учащихся о еде] (* <- lang_ru;; *);
+<- concept_message_topic;
+<= nrel_inclusion: concept_student_message;
+=> nrel_reply_production_chain: < @food_production >;
+=> nrel_message_keywords: [
+    еда;
+    еду;
+    еды;
+    хавка;
+    похавать;
+    пожрать
+];
+
+=> nrel_message_patterns: [
+  ^(чего|что).*еда.*$
+];;

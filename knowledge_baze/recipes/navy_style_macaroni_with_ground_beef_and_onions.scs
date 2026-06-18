@@ -1,7 +1,5 @@
 navy_style_macaroni_with_ground_beef_and_onions
 
-<- sc_node_class;
-
 <- concept_recipe;
 
 => nrel_main_idtf:
@@ -98,7 +96,7 @@ navy_style_macaroni_with_ground_beef_and_onions
 ..step2
     <- concept_recipe_step;
     => nrel_main_idtf:
-    [Шаг 2: Подготовка лука]  
+    [Шаг 2: Подготовка лука]
     (* <- lang_ru;; *);
     => nrel_recipe_step_description:
     [Лук очистите, промойте и мелко нарежьте.]

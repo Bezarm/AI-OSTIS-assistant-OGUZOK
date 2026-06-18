@@ -4,4 +4,9 @@ concept_user
     [пользователь]
     (* <- lang_ru;; *);
     [user]
-    (* <- lang_en;; *);;
+    (* <- lang_en;; *);
+<- concept_user_class;
+<= nrel_inclusion:
+    concept_known_user;
+=> nrel_author_message_class:
+    concept_user_message;;

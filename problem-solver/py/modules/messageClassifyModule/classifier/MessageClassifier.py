@@ -29,7 +29,7 @@ class MessageClassifier:
             (например: {"concept": "интеллект"}).
             3. Системные идентификаторы классов сущностей, извлечённых из контекста сообщения.
         """
-        if message_author_class == "concept_student":
+        if message_author_class == "concept_user":
             # Приветственное сообщение
             if "Привет" in message:
                 return ["concept_student_message_about_greeting", {}, {}]

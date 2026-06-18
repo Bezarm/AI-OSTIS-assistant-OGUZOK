@@ -1,4 +1,6 @@
 1862958404
 <- concept_user;
+=> nrel_full_name:
+    [Akim];
 => nrel_user_id:
     [1862958404];;

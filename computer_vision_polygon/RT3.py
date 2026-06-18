@@ -3,9 +3,9 @@ from ultralytics import YOLO
 model = YOLO('/home/akimg/pyml/OGUZOK/AI-OSTIS-assistant-OGUZOK/computer_vision_polygon/models/best_yolo.pt')
 
 results = model(
-    source  = '/home/akimg/pyml/OGUZOK/AI-OSTIS-assistant-OGUZOK/computer_vision_polygon/stest/23.jpg',
-    conf    = 0.25,
-    iou     = 0.45,
+    source  = '/home/akimg/pyml/OGUZOK/AI-OSTIS-assistant-OGUZOK/computer_vision_polygon/stest/final.jpg',
+    conf    = 0.0001,
+    iou     = 0.3,
     imgsz   = 640,
     save    = True,
     name    = 'inference_test',

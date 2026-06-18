@@ -65,7 +65,7 @@ class Model():
     def __init__(self):
         self.modelpath = Path(__file__).parent.parent/'computer_vision_polygon'/'models'/'best_yolo.pt'
         self.model = YOLO(self.model)
-    def analyze(self, path, conf=0.25):
+    def analyze(self, path, conf=0.003):
         results = self.model(
             source  = path,
             conf    = conf,

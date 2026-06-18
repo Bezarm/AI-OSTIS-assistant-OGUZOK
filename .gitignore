@@ -1,5 +1,6 @@
 __pycache__
 kb.bin
+.venv
 
 config.py
 computer_vision_polygon/models/
@@ -7,3 +8,4 @@ runs/
 test.py
 
 sc-web/
+ims.ostis.kb

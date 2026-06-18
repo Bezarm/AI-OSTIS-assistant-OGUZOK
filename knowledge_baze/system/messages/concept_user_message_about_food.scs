@@ -7,11 +7,11 @@
 };;
 @food_production <- nrel_reply_production;;
 
-concept_student_message_about_food
+concept_user_message_about_food
 <- sc_node_class;
 => nrel_main_idtf: [класс сообщений учащихся о еде] (* <- lang_ru;; *);
 <- concept_message_topic;
-<= nrel_inclusion: concept_student_message;
+<= nrel_inclusion: concept_user_message;
 => nrel_reply_production_chain: < @food_production >;
 => nrel_message_keywords: [
     еда;

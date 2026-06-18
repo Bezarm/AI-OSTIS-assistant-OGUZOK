@@ -21,18 +21,18 @@ case "$1" in
       -e "$SC_MACHINE_PATH/lib/extensions;$NIKA_PATH/lib/extensions" -c nika.ini
     ;;
   web)
-    cd $PROJECT_ROOT_PATH/sc-web || exit 1
+    cd $PROJECT_ROOT_PATH || exit 1
     source .venv/bin/activate
-    python3 server/app.py
+    python3 sc-web/server/app.py
     ;;
   interface)
     cd $PROJECT_ROOT_PATH/interface || exit 1
     npm run start
     ;;
   py_server)
-    cd $PROJECT_ROOT_PATH/problem-solver/py || exit 1
+    cd $PROJECT_ROOT_PATH || exit 1
     source .venv/bin/activate
-    python3 server.py
+    python3 problem-solver/py/server.py
     ;;
   *)
     echo "Usage: $0 {build_kb|machine|web|interface|py_server}"

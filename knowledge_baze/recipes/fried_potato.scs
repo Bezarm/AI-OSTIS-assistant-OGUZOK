@@ -1,7 +1,5 @@
 fried_potato
 
-<- sc_node_class;
-
 <- concept_recipe;
 
 => nrel_main_idtf:
@@ -95,7 +93,7 @@ fried_potato
 ..step2
     <- concept_recipe_step;
     => nrel_main_idtf:
-    [Шаг 2: Нарезка картофеля]  
+    [Шаг 2: Нарезка картофеля]
     (* <- lang_ru;; *);
     => nrel_recipe_step_description:
     [Нарежьте картофель брусочками среднего размера.]

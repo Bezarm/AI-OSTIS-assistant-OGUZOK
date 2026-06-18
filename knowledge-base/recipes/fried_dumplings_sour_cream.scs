@@ -1,0 +1,132 @@
+fried_dumplings_sour_cream
+
+<- sc_node_class;
+
+<- concept_recipe;
+
+=> nrel_main_idtf:
+    [Пельмени жареные на сковороде в сметане (по-фински)]
+    (* <- lang_ru;; *);
+    [Fried dumplings with sour cream (Finnish style)]
+    (* <- lang_en;; *);
+
+=> nrel_time_of_cooking:
+    [25 минут]
+    (* <- lang_ru;; *);
+    [25 minutes]
+    (* <- lang_en;; *);
+
+=> nrel_calorific_value:
+    [300 ккал на 100 г]
+    (* <- lang_ru;; *);
+    [300 kcal per 100 g]
+    (* <- lang_en;; *);
+
+=> nrel_count_of_portions:
+    [1-2 порции]
+    (* <- lang_ru;; *);
+    [1-2 portions]
+    (* <- lang_en;; *);
+
+=> nrel_dificulty_of_cooking:
+    [легко]
+    (* <- lang_ru;; *);
+    [easy]
+    (* <- lang_en;; *);
+
+=> nrel_has_ingredient:
+    pelmeni
+    (*
+        <- concept_ingredient;;
+        => nrel_main_idtf: [пельмени] (* <- lang_ru;; *);;
+        => nrel_amount: [400];;
+        => nrel_type_of_unit: [грамм] (* <- lang_ru;; *);;
+
+    *);
+    sour_cream
+    (*
+        <- concept_ingredient;;
+        => nrel_main_idtf: [сметана] (* <- lang_ru;; *);;
+        => nrel_amount: [100];;
+        => nrel_type_of_unit: [мл] (* <- lang_ru;; *);;
+
+    *);
+    cheese
+    (*
+        <- concept_ingredient;;
+        => nrel_main_idtf: [сыр] (* <- lang_ru;; *);;
+        => nrel_amount: [100];;
+        => nrel_type_of_unit: [грамм] (* <- lang_ru;; *);;
+
+    *);
+    butter
+    (*
+        <- concept_ingredient;;
+        => nrel_main_idtf: [масло сливочное] (* <- lang_ru;; *);;
+        => nrel_amount: [1];;
+        => nrel_type_of_unit: [ст. ложка] (* <- lang_ru;; *);;
+
+    *);
+
+=> concept_recipe_step: <
+    ..step1;
+    ..step2;
+    ..step3;
+    ..step4;
+    ..step5;
+    ..step6
+>;;
+
+..step1
+    <- concept_recipe_step;
+    => nrel_main_idtf:
+    [Шаг 1: Подготовка ингредиентов]
+    (* <- lang_ru;; *);
+    => nrel_recipe_step_description:
+    [Подготовьте все необходимые ингредиенты. Сыр натрите на крупной тёрке.]
+    (* <- lang_ru;; *);;
+
+..step2
+    <- concept_recipe_step;
+    => nrel_main_idtf:
+    [Шаг 2: Обжаривание пельменей]
+    (* <- lang_ru;; *);
+    => nrel_recipe_step_description:
+    [В сковороде разогрейте сливочное масло. Выложите замороженные пельмени (размораживать не нужно). Обжаривайте их на среднем огне около 6-8 минут, периодически помешивая, до появления золотистой корочки со всех сторон.]
+    (* <- lang_ru;; *);;
+
+..step3
+    <- concept_recipe_step;
+    => nrel_main_idtf:
+    [Шаг 3: Тушение пельменей]
+    (* <- lang_ru;; *);
+    => nrel_recipe_step_description:
+    [Добавьте к пельменям 100 мл тёплой воды. Накройте сковороду крышкой и тушите на небольшом огне около 10 минут, пока вода почти полностью не выпарится, а пельмени не станут мягкими внутри.]
+    (* <- lang_ru;; *);;
+
+..step4
+    <- concept_recipe_step;
+    => nrel_main_idtf:
+    [Шаг 4: Добавление сметаны]
+    (* <- lang_ru;; *);
+    => nrel_recipe_step_description:
+    [Добавьте к пельменям 100 мл сметаны и соль по вкусу. Аккуратно перемешайте. Томите под крышкой на минимальном огне ещё 3-5 минут, чтобы сметана прогрелась и превратилась в соус.]
+    (* <- lang_ru;; *);;
+
+..step5
+    <- concept_recipe_step;
+    => nrel_main_idtf:
+    [Шаг 5: Добавление сыра и зелени (по желанию)]
+    (* <- lang_ru;; *);
+    => nrel_recipe_step_description:
+    [Посыпьте пельмени натёртым сыром. Накройте сковороду крышкой и подержите на огне ещё 1-2 минуты, пока сыр полностью не расплавится.]
+    (* <- lang_ru;; *);;
+
+..step6
+    <- concept_recipe_step;
+    => nrel_main_idtf:
+    [Шаг 6: Подача]
+    (* <- lang_ru;; *);
+    => nrel_recipe_step_description:
+    [Пельмени готовы! Подавайте их горячими, прямо со сковороды. Приятного аппетита!]
+    (* <- lang_ru;; *);;

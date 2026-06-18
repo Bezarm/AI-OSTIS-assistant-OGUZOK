@@ -3,7 +3,7 @@ from ultralytics import YOLO
 model = YOLO('/home/akimg/pyml/OGUZOK/AI-OSTIS-assistant-OGUZOK/computer_vision_polygon/models/best_yolo.pt')
 
 results = model(
-    source  = '/home/akimg/pyml/OGUZOK/AI-OSTIS-assistant-OGUZOK/computer_vision_polygon/stest/final.jpg',
+    source  = '/home/akimg/pyml/OGUZOK/AI-OSTIS-assistant-OGUZOK/computer_vision_polygon/stest/23.jpg',
     conf    = 0.25,
     iou     = 0.45,
     imgsz   = 640,

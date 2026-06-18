@@ -1,0 +1,54 @@
+section_subject_domain_of_cooking
+<- sc_node_struct;
+=> nrel_main_idtf:
+[Раздел. Предметная область кулинария](* <- lang_ru;; *);
+[Section. Subject domain of cooking](* <- lang_en;; *);
+<- atomic_section;;
+
+section_subject_domain_of_cooking = [*
+subject_domain_of_cooking
+=> nrel_main_idtf:
+[Предметная область кулинария](* <- lang_ru;; *);
+[Subject domain of cooking] (* <- lang_en;; *);
+<- subject_domain;
+-> rrel_maximum_studied_object_class:
+   concept_of_cooking;
+-> rrel_not_maximum_studied_object_class:
+   concept_food;
+   concept_ingredient;
+   concept_recipe;
+   concept_recipe_step;
+   eggs;
+   potapo;
+   onion;
+   sugar;
+   carrot;
+   vegetable_oil;
+   flour;
+   butter;
+   milk;
+   pasta;
+   rice;
+   garlic;
+   cucumber;
+   tomato;
+   buckwheat;
+   cabbage;
+   bread;
+   cheese;
+   apples;
+   pelmeni;
+   ground_beef;
+   sour_cream;
+
+-> rrel_explored_relation:
+   nrel_time_of_cooking;
+   nrel_dificulty_of_cooking;
+   nrel_recipe_rating;
+   nrel_calorific_value;
+   nrel_count_of_portions;
+   nrel_amount;
+   nrel_needed_ingredients;
+   nrel_type_of_unit;
+   nrel_recipe_step_description;;
+*];;

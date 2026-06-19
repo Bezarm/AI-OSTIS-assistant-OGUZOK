@@ -1,6 +1,8 @@
 __pycache__
 kb.bin
 .venv
+data.db
+secret.txt
 
 config.py
 computer_vision_polygon/models/
@@ -9,3 +11,4 @@ test.py
 
 sc-web
 ims.ostis.kb
+knowledge_baze/users/telegram

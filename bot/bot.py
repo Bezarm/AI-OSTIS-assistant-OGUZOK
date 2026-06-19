@@ -17,9 +17,6 @@ def handle(message: types.Message):
     op.add_user(message.from_user.id, message.from_user.full_name)
     op.add_message(message.from_user.id, message.text)
 
-def test(text):
-    bot.send_message(1862958404, text)
-
 if __name__=="__main__":
     conn.safe_connect('ws://localhost:8090')
     conn.subscribe_to_message(bot.send_message)

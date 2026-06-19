@@ -120,7 +120,7 @@ class Connector():
             # tg_id = c.get_link_content(tg_id_link)[0].data
             tg_id = get_element_system_identifier(author_addr)
             text = c.get_link_content(reply_message_addr)[0].data
-            message_sender(int(tg_id), text)
+            message_sender(int(tg_id), text, parse_mode='HTML')
 
         event_params = ScEventSubscriptionParams(keynode_nrel_reply_to_message, 
                                                     ScEventType.AFTER_GENERATE_OUTGOING_ARC, on_message_replied)

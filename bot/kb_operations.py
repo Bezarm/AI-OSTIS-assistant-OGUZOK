@@ -47,6 +47,13 @@ class Connector():
     def safe_connect(self, url):
         if not c.is_connected():
             c.connect(url)
+        
+            c.set_reconnect_handler(
+                reconnect_handler=c.connect,
+                post_reconnect_handler=None,
+                reconnect_retries=5,
+                reconnect_retry_delay=1.0
+            )
     
     def __del__(self):
         c.disconnect()

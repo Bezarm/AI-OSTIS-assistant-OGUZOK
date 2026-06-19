@@ -16,7 +16,7 @@ class MessageClassifier:
         message : str
             Текст сообщения, подлежащий анализу и классификации.
         message_author_class : str
-            Класс автора сообщения (например: "concept_student").
+            Класс автора сообщения (например: "concept_user").
         message_history : list[str]
             История предыдущих сообщений пользователя для контекстного анализа.
 
@@ -24,7 +24,7 @@ class MessageClassifier:
         ----------
         tuple[str, dict[str], set[str]]
             Кортеж из трёх элементов:
-            1. Системный идентификатор класса сообщения (например: "concept_student_message_about_greeting").
+            1. Системный идентификатор класса сообщения (например: "concept_user_message_about_greeting").
             2. Основные идентификаторы сущностей и системные идентификаторы их классов, извлечённых из сообщения
             (например: {"concept": "интеллект"}).
             3. Системные идентификаторы классов сущностей, извлечённых из контекста сообщения.
@@ -32,24 +32,31 @@ class MessageClassifier:
         if message_author_class == "concept_user":
             # Приветственное сообщение
             if "Привет" in message:
-                return ["concept_student_message_about_greeting", {}, {}]
+                return ["concept_user_message_about_greeting", {}, {}]
 
             # Неформальное приветствие
             if "Как дела" in message:
-                return ["concept_student_message_about_casual_greeting", {}, {}]
+                return ["concept_user_message_about_casual_greeting", {}, {}]
 
              # Запрос о навыках системы
             if "Что ты умеешь" in message:
-                return ["concept_student_message_about_searching_my_skills", {}, {}]
+                return ["concept_user_message_about_searching_my_skills", {}, {}]
 
             # Запрос о помощи
             if "Мне нужна помощь" in message:
-                return ["concept_student_message_about_help", {}, {}]
+                return ["concept_user_message_about_help", {}, {}]
 
             # Запрос определения понятия
             if "Что такое" in message:
                 entity = message.split("Что такое")[1].strip()
                 entity_class = "concept"
-                return ["concept_student_message_about_searching_concept_information", {entity_class: entity}, {}]
+                return ["concept_user_message_about_searching_concept_information", {entity_class: entity}, {}]
+
+            if "Хочу похавать" in message:
+                #entity = message.split("Хочу похавать")[1].strip()
+                return ["concept_user_message_about_food", {}, {}]
+
+            if "Покажи рецепты" in message:
+                return ["concept_user_message_about_searching_recipes", {}, {}]
 
         return ["concept_unknown_message", {}, {}]

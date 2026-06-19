@@ -1,5 +1,8 @@
 from ultralytics import YOLO
+from cv2 import imread, QRCodeDetector
 from pathlib import Path
+import requests
+import re
 
 UNIFIED_CLASSES = [
   "apple",
@@ -65,7 +68,14 @@ class Model():
     def __init__(self):
         self.modelpath = Path(__file__).parent.parent/'computer_vision_polygon'/'models'/'best_yolo.pt'
         self.model = YOLO(self.model)
+        self.detector = QRCodeDetector()
     def analyze(self, path, conf=0.003):
+        img = imread(path)
+        data, bbox, straight_qrcode = self.detector.detectAndDecode(img)
+        if data:
+            if re.fullmatch(r'[A-Z0-9]{24}', data):
+             pass
+
         results = self.model(
             source  = path,
             conf    = conf,

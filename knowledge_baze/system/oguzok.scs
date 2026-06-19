@@ -47,7 +47,7 @@ myself
             *);;
         <- concept_skills;;
     *);
-    .help_students
+    .help_users
     (*
         => nrel_main_idtf:
             [помочь тебе]

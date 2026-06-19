@@ -1,0 +1,128 @@
+//////////////////////////////////////
+// Search recipes production
+//////////////////////////////////////
+
+// --- Reply template: recipes found
+
+@recipes_found_reply_template = [🍳 Я <b>знаю</b> такие рецепты:
+#foreach
+${foreach.item.index}) <b>${1}</b>:
+    • ⏱ Время: <i>${2}</i>
+    • 🔥 Сложность: <i>${3}</i>
+    • 📊 Калории: <i>${4}</i>
+    • 👥 Порции: <i>${5}</i>#if(${foreach.hasNext}),#cwf#else.#endif
+#cwb#endfor
+
+❗️ Спроси меня про конкретный рецепт или скажи, какие у тебя ингредиенты! 🤗];;
+
+// --- Production: recipes found
+
+@if_recipes_found_production = {
+    rrel_condition_template: {
+        rrel_init_template: {
+            rrel_template: [*
+                @output_param1 = (.._recipe <-_ concept_recipe);;
+                .._recipe _=> nrel_main_idtf:: .._name;;
+                @message_template_param1 = @output_param1;;
+            *];
+            rrel_template_output_params: {
+                @output_param1
+            }
+        } (* <- nrel_search_set_template;; *);
+        rrel_next_template: {
+            rrel_init_template: {
+                rrel_template: [*
+                    @input_param1 = (.._recipe <-_ concept_recipe);;
+                    .._recipe _=> nrel_time_of_cooking:: .._time;;
+                    @message_template_param2 = (.._time <-_ concept_time_of_cooking);;
+                    // .._recipe _=> nrel_dificulty_of_cooking:: .._difficulty;;
+                    // @message_template_param3 = (.._time <-_ concept_dificulty_of_cooking);;
+                *];
+                rrel_template_input_params: {
+                    @input_param1
+                }
+            } (* <- nrel_search_template;; *);
+            rrel_next_template: {
+                rrel_init_template: {
+                    rrel_template: [*
+                        @input_param1 = (.._recipe <-_ concept_recipe);;
+                        .._recipe _=> nrel_calorific_value:: .._calorific_value;;
+                        @message_template_param4 = (.._time <-_ concept_calorific_value);;
+                        // .._recipe _=> nrel_count_of_portions:: .._count_of_portions;;
+                        // @message_template_param5 = (.._time <-_ concept_count_of_portions);;
+                    *];
+                    rrel_template_input_params: {
+                        @input_param1
+                    }
+                } (* <- nrel_search_template;; *)
+            } (* <- nrel_fixed_search_strategy_template;; *)
+        } (* <- nrel_fixed_search_strategy_template;; *)
+    } (* <- nrel_fixed_search_strategy_template;; *);
+    rrel_reply_template: {
+        rrel_message_template: @recipes_found_reply_template;
+        rrel_message_template_params: <
+            @message_template_param1;
+            @message_template_param2;
+            // @message_template_param3;
+            @message_template_param4
+            // @message_template_param5
+        >
+    }
+};;
+@if_recipes_found_production <- nrel_reply_production;;
+
+// --- Message topic class
+
+concept_user_message_about_searching_recipes
+<- sc_node_class;
+=> nrel_main_idtf:
+    [класс сообщений учащихся о поиске рецептов]
+    (*
+        <- lang_ru;;
+    *);
+<- concept_message_topic;
+<= nrel_inclusion:
+    concept_user_message;
+=> nrel_corresponding_skill:
+    ...
+    (*
+        => nrel_main_idtf:
+            [найти все рецепты]
+            (*
+                <- lang_ru;;
+            *);;
+        <- concept_skill;;
+        <- .help_users;;
+    *);
+=> nrel_example:
+    [Какие рецепты ты знаешь?]
+    (*
+        <- concept_example;;
+    *);
+=> nrel_example:
+    [Что можно приготовить?]
+    (*
+        <- concept_example;;
+    *);
+=> nrel_example:
+    [Покажи рецепты]
+    (*
+        <- concept_example;;
+    *);
+=> nrel_reply_production_chain: <
+    @if_recipes_found_production
+>;
+=> nrel_message_keywords: [
+    какие рецепты;
+    покажи рецепты;
+    что можно приготовить;
+    рецепты;
+    найди рецепт;
+    есть рецепты;
+    список рецептов;
+    что ты умеешь готовить;
+    покажи что можно приготовить;
+];
+=> nrel_message_patterns: [
+    ^(какие|покажи|найди|есть|скинь).*(рецепт|рецепты).*$;
+];;

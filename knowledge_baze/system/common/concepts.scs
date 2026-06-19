@@ -16,6 +16,73 @@ lang_ru
         <- lang_ru;;
     *);;
 
+nrel_time_of_cooking
+<- sc_node_non_role_relation;
+<- concept_non_role_relation;
+<- concept_binary_relation;
+<- concept_food_relation;
+=> nrel_main_idtf:
+    [время готовки*]
+    (*
+        <- lang_ru;;
+    *);
+=> nrel_idtf:
+    [Время готовки]
+    (*
+        <- lang_ru;;
+    *);;
+
+nrel_calorific_value
+<- sc_node_non_role_relation;
+<- concept_non_role_relation;
+<- concept_binary_relation;
+<- concept_food_relation;
+=> nrel_main_idtf:
+    [калорийность*]
+    (*
+        <- lang_ru;;
+    *);
+
+=> nrel_idtf:
+    [время готовки*]
+    (*
+        <- lang_ru;;
+    *);;
+
+nrel_dificulty_of_cooking
+<- sc_node_non_role_relation;
+<- concept_non_role_relation;
+<- concept_binary_relation;
+<- concept_food_relation;
+=> nrel_main_idtf:
+    [сложность готовки*]
+    (*
+        <- lang_ru;;
+    *);
+
+=> nrel_idtf:
+    [Время готовки]
+    (*
+        <- lang_ru;;
+    *);;
+
+nrel_count_of_portions
+<- sc_node_non_role_relation;
+<- concept_non_role_relation;
+<- concept_binary_relation;
+<- concept_food_relation;
+=> nrel_main_idtf:
+    [количество порций*]
+    (*
+        <- lang_ru;;
+    *);
+
+=> nrel_idtf:
+    [Количество порций]
+    (*
+        <- lang_ru;;
+    *);;
+
 nrel_main_idtf
 <- sc_node_non_role_relation;
 <- concept_non_role_relation;

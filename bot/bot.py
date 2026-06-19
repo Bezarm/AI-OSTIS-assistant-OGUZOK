@@ -14,6 +14,7 @@ def start(message: types.Message):
 
 @bot.message_handler()
 def handle(message: types.Message):
+    op.add_user(message.from_user.id, message.from_user.full_name)
     op.add_message(message.from_user.id, message.text)
 
 def test(text):

@@ -1,0 +1,27 @@
+@restart_reply_template = [Хорошо, давай начнём сначала!];;
+
+@restart_production = {
+  rrel_reply_template: {
+    rrel_message_template: @restart_reply_template
+  }
+};;
+@restart_production <- nrel_reply_production;;
+
+concept_user_message_about_restart
+<- sc_node_class;
+=> nrel_main_idtf: [класс сообщений о перезапуске диалога] (* <- lang_ru;; *);
+<- concept_message_topic;
+<= nrel_inclusion: concept_user_message;
+=> nrel_reply_production_chain: < @restart_production >;
+=> nrel_message_keywords: [
+    сначала;
+    заново;
+    перезапуск;
+    начать сначала;
+    начать заново;
+    рестарт
+];
+=> nrel_message_patterns: [
+  ^нач(ни|нём) (сначала|заново).*$;
+  ^(перезапусти|рестарт).*$
+];;

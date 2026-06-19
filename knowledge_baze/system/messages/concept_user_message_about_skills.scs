@@ -1,0 +1,31 @@
+@skills_reply_template = [Я — OGUZOK! Я умею помогать с готовкой: подбирать рецепты по ингредиентам, распознавать продукты на фото, отвечать на вопросы. Что тебя интересует?];;
+
+@skills_production = {
+  rrel_reply_template: {
+    rrel_message_template: @skills_reply_template
+  }
+};;
+@skills_production <- nrel_reply_production;;
+
+concept_user_message_about_skills
+<- sc_node_class;
+=> nrel_main_idtf: [класс сообщений с запросом навыков системы] (* <- lang_ru;; *);
+<- concept_message_topic;
+<= nrel_inclusion: concept_user_message;
+=> nrel_reply_production_chain: < @skills_production >;
+=> nrel_message_keywords: [
+    умеешь;
+    можешь;
+    навыки;
+    возможности;
+    функции;
+    что ты;
+    чем ты;
+    help;
+    помощь
+];
+=> nrel_message_patterns: [
+  ^что ты умеешь.*$;
+  ^что ты можешь.*$;
+  ^какие (у тебя )?(функции|навыки|возможности).*$
+];;

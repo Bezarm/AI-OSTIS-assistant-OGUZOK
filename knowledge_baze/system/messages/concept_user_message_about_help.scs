@@ -1,0 +1,32 @@
+@help_reply_template = [Конечно! Расскажи, что случилось, и я постараюсь помочь.];;
+
+@help_production = {
+  rrel_reply_template: {
+    rrel_message_template: @help_reply_template
+  }
+};;
+@help_production <- nrel_reply_production;;
+
+concept_user_message_about_help
+<- sc_node_class;
+=> nrel_main_idtf: [класс сообщений с запросом помощи] (* <- lang_ru;; *);
+<- concept_message_topic;
+<= nrel_inclusion: concept_user_message;
+=> nrel_reply_production_chain: < @help_production >;
+=> nrel_message_keywords: [
+    помощь;
+    помоги;
+    подскажи;
+    не понимаю;
+    сложно;
+    трудно;
+    что делать;
+    помогите
+];
+=> nrel_message_patterns: [
+  ^помоги.*$;
+  ^нужна помощь.*$;
+  ^мне нужна помощь.*$;
+  ^я не понимаю.*$;
+  ^подскажи.*$
+];;

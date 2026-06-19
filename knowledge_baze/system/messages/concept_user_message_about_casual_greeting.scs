@@ -1,0 +1,23 @@
+@casual_greeting_reply_template = [Привет! Всё отлично, а у тебя?];;
+
+@casual_greeting_production = {
+  rrel_reply_template: {
+    rrel_message_template: @casual_greeting_reply_template
+  }
+};;
+@casual_greeting_production <- nrel_reply_production;;
+
+concept_user_message_about_casual_greeting
+<- sc_node_class;
+=> nrel_main_idtf: [класс неформальных приветствий пользователя] (* <- lang_ru;; *);
+<- concept_message_topic;
+<= nrel_inclusion: concept_user_message;
+<= nrel_inclusion: concept_user_message_about_greeting;
+=> nrel_reply_production_chain: < @casual_greeting_production >;
+=> nrel_message_keywords: [
+    как дела;
+    как ты;
+    как жизнь;
+    чё как;
+    как оно
+];;

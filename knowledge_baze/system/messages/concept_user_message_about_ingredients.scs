@@ -1,0 +1,22 @@
+concept_user_message_about_ingredients
+<- sc_node_class;
+=> nrel_main_idtf: [класс сообщений об ингредиентах] (* <- lang_ru;; *);
+<- concept_message_topic;
+<= nrel_inclusion: concept_user_message;
+<= nrel_inclusion: concept_user_message_about_food;
+=> nrel_message_keywords: [
+    есть;
+    имеется;
+    добавь;
+    положи;
+    купил;
+    нашёл;
+    убери;
+    удали;
+    выбрось;
+    нет;
+    покажи;
+    список;
+    какие;
+    очисти
+];;

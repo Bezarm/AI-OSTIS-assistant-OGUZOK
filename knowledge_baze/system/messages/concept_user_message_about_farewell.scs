@@ -1,0 +1,29 @@
+@farewell_reply_template = [Пока! Если понадоблюсь — обращайся!];;
+
+@farewell_production = {
+  rrel_reply_template: {
+    rrel_message_template: @farewell_reply_template
+  }
+};;
+@farewell_production <- nrel_reply_production;;
+
+concept_user_message_about_farewell
+<- sc_node_class;
+=> nrel_main_idtf: [класс прощальных сообщений пользователя] (* <- lang_ru;; *);
+<- concept_message_topic;
+<= nrel_inclusion: concept_user_message;
+=> nrel_reply_production_chain: < @farewell_production >;
+=> nrel_message_keywords: [
+    пока;
+    до свидания;
+    прощай;
+    goodbye;
+    бай;
+    увидимся;
+    всего доброго;
+    удачи
+];
+=> nrel_message_patterns: [
+  ^пока.*$;
+  ^до свидания.*$
+];;

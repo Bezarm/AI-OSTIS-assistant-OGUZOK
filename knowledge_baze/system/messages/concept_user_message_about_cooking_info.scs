@@ -1,0 +1,23 @@
+concept_user_message_about_cooking_info
+<- sc_node_class;
+=> nrel_main_idtf: [класс сообщений с запросом информации о блюде] (* <- lang_ru;; *);
+<- concept_message_topic;
+<= nrel_inclusion: concept_user_message;
+<= nrel_inclusion: concept_user_message_about_food;
+=> nrel_message_keywords: [
+    калории;
+    калорий;
+    калорийность;
+    время;
+    минут;
+    сложность;
+    порций;
+    ингредиенты;
+    состав;
+    описание;
+    сколько
+];
+=> nrel_message_patterns: [
+  ^сколько (калорий|времени).*$;
+  ^(какая|какое) (сложность|время).*$
+];;

@@ -1,0 +1,34 @@
+@preferences_reply_template = [Запомнил твои предпочтения! Буду их учитывать при подборе рецептов.];;
+
+@preferences_production = {
+  rrel_reply_template: {
+    rrel_message_template: @preferences_reply_template
+  }
+};;
+@preferences_production <- nrel_reply_production;;
+
+concept_user_message_about_preferences
+<- sc_node_class;
+=> nrel_main_idtf: [класс сообщений о предпочтениях пользователя] (* <- lang_ru;; *);
+<- concept_message_topic;
+<= nrel_inclusion: concept_user_message;
+=> nrel_reply_production_chain: < @preferences_production >;
+=> nrel_message_keywords: [
+    аллергия;
+    аллерги;
+    не ем;
+    не люблю;
+    предпочитаю;
+    исключи;
+    диета;
+    веган;
+    вегетарианец;
+    без;
+    нельзя
+];
+=> nrel_message_patterns: [
+  ^у меня аллергия.*$;
+  ^я не (ем|люблю).*$;
+  ^(мои |)(предпочтения|диета).*$;
+  ^без .*$
+];;

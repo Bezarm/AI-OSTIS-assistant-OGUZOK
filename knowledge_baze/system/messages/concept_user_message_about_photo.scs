@@ -1,0 +1,16 @@
+@photo_reply_template = [Отличное фото! Сейчас распознаю продукты...];;
+
+@photo_production = {
+  rrel_reply_template: {
+    rrel_message_template: @photo_reply_template
+  }
+};;
+@photo_production <- nrel_reply_production;;
+
+concept_user_message_about_photo
+<- sc_node_class;
+=> nrel_main_idtf: [класс сообщений с изображением продуктов] (* <- lang_ru;; *);
+<- concept_message_topic;
+<= nrel_inclusion: concept_user_message;
+<= nrel_inclusion: concept_user_message_about_food;
+=> nrel_reply_production_chain: < @photo_production >;;

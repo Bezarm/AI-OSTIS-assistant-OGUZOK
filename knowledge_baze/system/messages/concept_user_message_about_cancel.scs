@@ -1,0 +1,27 @@
+@cancel_reply_template = [Хорошо, отменил. Если передумаешь — дай знать!];;
+
+@cancel_production = {
+  rrel_reply_template: {
+    rrel_message_template: @cancel_reply_template
+  }
+};;
+@cancel_production <- nrel_reply_production;;
+
+concept_user_message_about_cancel
+<- sc_node_class;
+=> nrel_main_idtf: [класс сообщений об отмене действия] (* <- lang_ru;; *);
+<- concept_message_topic;
+<= nrel_inclusion: concept_user_message;
+=> nrel_reply_production_chain: < @cancel_production >;
+=> nrel_message_keywords: [
+    отмена;
+    отмени;
+    не надо;
+    передумал;
+    отменить
+];
+=> nrel_message_patterns: [
+  ^отмена.*$;
+  ^не надо.*$;
+  ^передумал.*$
+];;

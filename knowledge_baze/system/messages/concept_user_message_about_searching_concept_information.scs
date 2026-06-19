@@ -1,0 +1,22 @@
+@concept_info_reply_template = [Сейчас поищу информацию по этому понятию.];;
+
+@concept_info_production = {
+  rrel_reply_template: {
+    rrel_message_template: @concept_info_reply_template
+  }
+};;
+@concept_info_production <- nrel_reply_production;;
+
+concept_user_message_about_searching_concept_information
+<- sc_node_class;
+=> nrel_main_idtf: [класс сообщений с запросом определения понятия] (* <- lang_ru;; *);
+<- concept_message_topic;
+<= nrel_inclusion: concept_user_message;
+=> nrel_reply_production_chain: < @concept_info_production >;
+=> nrel_message_keywords: [
+    что такое;
+    что значит;
+    объясни;
+    определение;
+    что это
+];;

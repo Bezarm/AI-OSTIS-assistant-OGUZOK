@@ -1,0 +1,33 @@
+@recipe_search_reply_template = [Давай подберём рецепт! Сначала расскажи, какие у тебя есть ингредиенты.];;
+
+@recipe_search_production = {
+  rrel_reply_template: {
+    rrel_message_template: @recipe_search_reply_template
+  }
+};;
+@recipe_search_production <- nrel_reply_production;;
+
+concept_user_message_about_recipe_search
+<- sc_node_class;
+=> nrel_main_idtf: [класс сообщений с запросом рецепта] (* <- lang_ru;; *);
+<- concept_message_topic;
+<= nrel_inclusion: concept_user_message;
+=> nrel_reply_production_chain: < @recipe_search_production >;
+=> nrel_message_keywords: [
+    рецепт;
+    приготовить;
+    сделать;
+    блюдо;
+    сварить;
+    пожарить;
+    испечь;
+    что можно;
+    найди;
+    подбери;
+    предложи
+];
+=> nrel_message_patterns: [
+  ^что (можно |бы )(приготовить|сделать|поесть).*$;
+  ^найди рецепт.*$;
+  ^(как |)(приготовить|сварить|пожарить|испечь).*$
+];;

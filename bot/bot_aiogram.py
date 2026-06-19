@@ -18,9 +18,9 @@ async def start(message: types.Message):
     await message.answer("1234")
 
 @dp.message()
-async def start(message: types.Message):
+async def handle(message: types.Message):
     op.add_message(message.from_user.id, message.text)
-    await message.answer("1234")
+    #await message.answer("1234")
 
 def on_nika_reply(text):
     print(543)

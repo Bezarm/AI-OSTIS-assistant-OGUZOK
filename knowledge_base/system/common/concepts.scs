@@ -22,11 +22,6 @@ nrel_time_of_cooking
 <- concept_binary_relation;
 <- concept_food_relation;
 => nrel_main_idtf:
-    [время готовки*]
-    (*
-        <- lang_ru;;
-    *);
-=> nrel_idtf:
     [Время готовки]
     (*
         <- lang_ru;;
@@ -38,13 +33,7 @@ nrel_calorific_value
 <- concept_binary_relation;
 <- concept_food_relation;
 => nrel_main_idtf:
-    [калорийность*]
-    (*
-        <- lang_ru;;
-    *);
-
-=> nrel_idtf:
-    [время готовки*]
+    [Калорийность]
     (*
         <- lang_ru;;
     *);;
@@ -55,13 +44,7 @@ nrel_dificulty_of_cooking
 <- concept_binary_relation;
 <- concept_food_relation;
 => nrel_main_idtf:
-    [сложность готовки*]
-    (*
-        <- lang_ru;;
-    *);
-
-=> nrel_idtf:
-    [Время готовки]
+    [Сложность готовки]
     (*
         <- lang_ru;;
     *);;
@@ -72,13 +55,18 @@ nrel_count_of_portions
 <- concept_binary_relation;
 <- concept_food_relation;
 => nrel_main_idtf:
-    [количество порций*]
+    [Количество порций]
     (*
         <- lang_ru;;
-    *);
+    *);;
 
-=> nrel_idtf:
-    [Количество порций]
+nrel_has_ingredient
+<- sc_node_non_role_relation;
+<- concept_non_role_relation;
+<- concept_binary_relation;
+<- concept_ingredient_relation;
+=> nrel_main_idtf:
+    [Ингредиент]
     (*
         <- lang_ru;;
     *);;
@@ -454,3 +442,4 @@ concept_binary_relation
     (*
         <- lang_ru;;
     *);;
+

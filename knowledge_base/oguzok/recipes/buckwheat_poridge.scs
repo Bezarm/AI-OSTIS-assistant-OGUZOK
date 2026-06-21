@@ -1,42 +1,31 @@
-buckwheat
+buckwheat_poridge
 
 <- concept_recipe;
 
 => nrel_main_idtf:
-    [Гречневая каша]
+    [Греча]
     (* <- lang_ru;; *);
-    [Buckwheat porridge]
-    (* <- lang_en;; *);
 
 => nrel_time_of_cooking:
     [35 минут]
     (* <- lang_ru;; *);
-    [35 minutes]
-    (* <- lang_en;; *);
 
 => nrel_calorific_value:
     [343 ккал на 100 г]
     (* <- lang_ru;; *);
-    [343 kcal per 100 g]
-    (* <- lang_en;; *);
 
 => nrel_count_of_portions:
     [3 порции]
     (* <- lang_ru;; *);
-    [3 portions]
-    (* <- lang_en;; *);
 
 => nrel_dificulty_of_cooking:
     [легко]
     (* <- lang_ru;; *);
-    [easy]
-    (* <- lang_en;; *);
 
 => nrel_has_ingredient:
     buckwheat
     (*
         <- concept_ingredient;;
-        => nrel_main_idtf: [гречневая крупа] (* <- lang_ru;; *);;
         => nrel_amount: [1];;
         => nrel_type_of_unit: [стакан] (* <- lang_ru;; *);;
 
@@ -44,7 +33,6 @@ buckwheat
     butter
     (*
         <- concept_ingredient;;
-        => nrel_main_idtf: [сливочное масло] (* <- lang_ru;; *);;
         => nrel_amount: [40-50];;
         => nrel_type_of_unit: [грамм] (* <- lang_ru;; *);;
 

@@ -3,40 +3,29 @@ navy_style_macaroni_with_ground_beef_and_onions
 <- concept_recipe;
 
 => nrel_main_idtf:
-    [Макароны по-флотски с фаршем и луком]
+    [Макароны по-флотски]
     (* <- lang_ru;; *);
-    [Navy style macaroni with ground beef and onions]
-    (* <- lang_en;; *);
 
 => nrel_time_of_cooking:
     [30 минут]
     (* <- lang_ru;; *);
-    [30 minutes]
-    (* <- lang_en;; *);
 
 => nrel_calorific_value:
     [200 ккал на 100 г]
     (* <- lang_ru;; *);
-    [200 kcal per 100 g]
-    (* <- lang_en;; *);
 
 => nrel_count_of_portions:
     [4 порции]
     (* <- lang_ru;; *);
-    [4 portions]
-    (* <- lang_en;; *);
 
 => nrel_dificulty_of_cooking:
     [средне]
     (* <- lang_ru;; *);
-    [medium]
-    (* <- lang_en;; *);
 
 => nrel_has_ingredient:
     macarones
     (*
         <- concept_ingredient;;
-        => nrel_main_idtf: [макароны (рожки)] (* <- lang_ru;; *);;
         => nrel_amount: [300];;
         => nrel_type_of_unit: [грамм] (* <- lang_ru;; *);;
 
@@ -44,7 +33,6 @@ navy_style_macaroni_with_ground_beef_and_onions
     ground_beef
     (*
         <- concept_ingredient;;
-        => nrel_main_idtf: [фарш говяжий] (* <- lang_ru;; *);;
         => nrel_amount: [300];;
         => nrel_type_of_unit: [грамм] (* <- lang_ru;; *);;
 
@@ -52,7 +40,6 @@ navy_style_macaroni_with_ground_beef_and_onions
     onion
     (*
         <- concept_ingredient;;
-        => nrel_main_idtf: [лук репчатый] (* <- lang_ru;; *);;
         => nrel_amount: [100];;
         => nrel_type_of_unit: [грамм] (* <- lang_ru;; *);;
 
@@ -60,14 +47,12 @@ navy_style_macaroni_with_ground_beef_and_onions
     butter
     (*
         <- concept_ingredient;;
-        => nrel_main_idtf: [масло сливочное] (* <- lang_ru;; *);;
         => nrel_amount: [50];;
         => nrel_type_of_unit: [грамм] (* <- lang_ru;; *);;
     *);
     vegetable_oil
     (*
         <- concept_ingredient;;
-        => nrel_main_idtf: [растительное масло] (* <- lang_ru;; *);;
         => nrel_amount: [3];;
         => nrel_type_of_unit: [ст. ложки] (* <- lang_ru;; *);;
     *);

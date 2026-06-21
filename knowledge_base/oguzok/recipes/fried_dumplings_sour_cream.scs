@@ -3,40 +3,29 @@ fried_dumplings_sour_cream
 <- concept_recipe;
 
 => nrel_main_idtf:
-    [Пельмени жареные на сковороде в сметане (по-фински)]
+    [Жареные пельмени]
     (* <- lang_ru;; *);
-    [Fried dumplings with sour cream (Finnish style)]
-    (* <- lang_en;; *);
 
 => nrel_time_of_cooking:
     [25 минут]
     (* <- lang_ru;; *);
-    [25 minutes]
-    (* <- lang_en;; *);
 
 => nrel_calorific_value:
     [300 ккал на 100 г]
     (* <- lang_ru;; *);
-    [300 kcal per 100 g]
-    (* <- lang_en;; *);
 
 => nrel_count_of_portions:
     [1-2 порции]
     (* <- lang_ru;; *);
-    [1-2 portions]
-    (* <- lang_en;; *);
 
 => nrel_dificulty_of_cooking:
     [легко]
     (* <- lang_ru;; *);
-    [easy]
-    (* <- lang_en;; *);
 
 => nrel_has_ingredient:
     pelmeni
     (*
         <- concept_ingredient;;
-        => nrel_main_idtf: [пельмени] (* <- lang_ru;; *);;
         => nrel_amount: [400];;
         => nrel_type_of_unit: [грамм] (* <- lang_ru;; *);;
 
@@ -44,7 +33,6 @@ fried_dumplings_sour_cream
     sour_cream
     (*
         <- concept_ingredient;;
-        => nrel_main_idtf: [сметана] (* <- lang_ru;; *);;
         => nrel_amount: [100];;
         => nrel_type_of_unit: [мл] (* <- lang_ru;; *);;
 
@@ -52,7 +40,6 @@ fried_dumplings_sour_cream
     cheese
     (*
         <- concept_ingredient;;
-        => nrel_main_idtf: [сыр] (* <- lang_ru;; *);;
         => nrel_amount: [100];;
         => nrel_type_of_unit: [грамм] (* <- lang_ru;; *);;
 
@@ -60,7 +47,6 @@ fried_dumplings_sour_cream
     butter
     (*
         <- concept_ingredient;;
-        => nrel_main_idtf: [масло сливочное] (* <- lang_ru;; *);;
         => nrel_amount: [1];;
         => nrel_type_of_unit: [ст. ложка] (* <- lang_ru;; *);;
 

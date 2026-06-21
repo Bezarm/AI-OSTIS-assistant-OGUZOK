@@ -5,38 +5,27 @@ fried_potato
 => nrel_main_idtf:
     [Жареная картошка]
     (* <- lang_ru;; *);
-    [Fried potato]
-    (* <- lang_en;; *);
 
 => nrel_time_of_cooking:
     [20 минут]
     (* <- lang_ru;; *);
-    [20 minutes]
-    (* <- lang_en;; *);
 
 => nrel_calorific_value:
     [150 ккал на 100 г]
     (* <- lang_ru;; *);
-    [150 kcal per 100 g]
-    (* <- lang_en;; *);
 
 => nrel_count_of_portions:
     [2 порции]
     (* <- lang_ru;; *);
-    [2 portions]
-    (* <- lang_en;; *);
 
 => nrel_dificulty_of_cooking:
     [легко]
     (* <- lang_ru;; *);
-    [easy]
-    (* <- lang_en;; *);
 
 => nrel_has_ingredient:
     potato
     (*
         <- concept_ingredient;;
-        => nrel_main_idtf: [картофель] (* <- lang_ru;; *);;
         => nrel_amount: [700];;
         => nrel_type_of_unit: [грамм] (* <- lang_ru;; *);;
 
@@ -44,7 +33,6 @@ fried_potato
     vegetable_oil
     (*
         <- concept_ingredient;;
-        => nrel_main_idtf: [растительное масло] (* <- lang_ru;; *);;
         => nrel_amount: [3-4];;
         => nrel_type_of_unit: [ст. ложки] (* <- lang_ru;; *);;
 
@@ -52,7 +40,6 @@ fried_potato
     onion
     (*
         <- concept_ingredient;;
-        => nrel_main_idtf: [лук репчатый] (* <- lang_ru;; *);;
         => nrel_amount: [180];;
         => nrel_type_of_unit: [грамм] (* <- lang_ru;; *);;
 
@@ -60,7 +47,6 @@ fried_potato
     garlic
     (*
         <- concept_ingredient;;
-        => nrel_main_idtf: [чеснок] (* <- lang_ru;; *);;
         => nrel_amount: [1];;
         => nrel_type_of_unit: [зубчик] (* <- lang_ru;; *);;
     *);

@@ -10,7 +10,7 @@ concept_ingredient
 
 => nrel_inclusion:
     concept_food;
-    eggs (* <= nrel_main_idtf: [яйцо] (* <- lang_ru;; *);; *);
+    egg (* <= nrel_main_idtf: [яйцо] (* <- lang_ru;; *);; *);
     potapo (* <= nrel_main_idtf: [картошка] (* <- lang_ru;; *);; *);
     onion (* <= nrel_main_idtf: [лук] (* <- lang_ru;; *);; *);
     sugar (* <= nrel_main_idtf: [сахар] (* <- lang_ru;; *);; *);
@@ -32,6 +32,7 @@ concept_ingredient
     macarones (* <= nrel_main_idtf: [макароны] (* <- lang_ru;; *);; *);
     sour_cream (* <= nrel_main_idtf: [сметана] (* <- lang_ru;; *);; *);
     ground_beef (* <= nrel_main_idtf: [фарш] (* <- lang_ru;; *);; *);
+    cottage_cheese (* <= nrel_main_idtf: [творог] (* <- lang_ru;; *);; *);
 
 => nrel_note:
     [Ингредиент — это составная часть блюда, используемая для приготовления пищи.

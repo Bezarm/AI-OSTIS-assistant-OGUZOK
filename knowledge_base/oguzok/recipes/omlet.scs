@@ -1,0 +1,136 @@
+omlet
+
+<- concept_recipe;
+
+=> nrel_main_idtf:
+    [Омлет]
+    (* <- lang_ru;; *);
+
+=> nrel_time_of_cooking:
+    [10 минут]
+    (* <- lang_ru;; *);
+
+=> nrel_calorific_value:
+    [154 ккал на 100 г]
+    (* <- lang_ru;; *);
+
+=> nrel_count_of_portions:
+    [1 порция]
+    (* <- lang_ru;; *);
+
+=> nrel_dificulty_of_cooking:
+    [легко]
+    (* <- lang_ru;; *);
+
+=> nrel_has_ingredient:
+    egg
+    (*
+        <- concept_ingredient;;
+        => nrel_amount: [5];;
+        => nrel_type_of_unit: [шт] (* <- lang_ru;; *);;
+
+    *);
+    milk
+    (*
+        <- concept_ingredient;;
+        => nrel_amount: [100];;
+        => nrel_type_of_unit: [мл] (* <- lang_ru;; *);;
+
+    *);
+    flour
+    (*
+        <- concept_ingredient;;
+        => nrel_amount: [0.5];;
+        => nrel_type_of_unit: [ст. л] (* <- lang_ru;; *);;
+
+    *);
+    vegetable_oil
+    (*
+        <- concept_ingredient;;
+        => nrel_amount: [2];;
+        => nrel_type_of_unit: [ст. л] (* <- lang_ru;; *);;
+
+    *);
+
+=> concept_recipe_step: <
+    ..step1;
+    ..step2;
+    ..step3;
+    ..step4;
+    ..step5;
+    ..step6;
+    ..step7;
+    ..step8
+>;;
+
+..step1
+    <- concept_recipe_step;
+    => nrel_main_idtf:
+    [Шаг 1: Разбейте яйца]
+    (* <- lang_ru;; *);
+    => nrel_recipe_step_description:
+    [Разбейте все яйца в миску.]
+    (* <- lang_ru;; *);;
+
+..step2
+    <- concept_recipe_step;
+    => nrel_main_idtf:
+    [Шаг 2: Подливаем молоко]
+    (* <- lang_ru;; *);
+    => nrel_recipe_step_description:
+    [Залейте молоко в миску]
+    (* <- lang_ru;; *);;
+
+..step3
+    <- concept_recipe_step;
+    => nrel_main_idtf:
+    [Шаг 3: Добавляем муку]
+    (* <- lang_ru;; *);
+    => nrel_recipe_step_description:
+    [Добавить муку и соль. По желанию можно добавить щепотку сахара]
+    (* <- lang_ru;; *);;
+
+..step4
+    <- concept_recipe_step;
+    => nrel_main_idtf:
+    [Шаг 4: Взбивка]
+    (* <- lang_ru;; *);
+    => nrel_recipe_step_description:
+    [Взбиваем нашу смесь вилкой или венчиком до однородности]
+    (* <- lang_ru;; *);;
+
+..step5
+    <- concept_recipe_step;
+    => nrel_main_idtf:
+    [Шаг 5: Подготовка сковородки]
+    (* <- lang_ru;; *);
+    => nrel_recipe_step_description:
+    [Вылейте масло на сковородку, и разогрейте её]
+    (* <- lang_ru;; *);;
+
+..step6
+    <- concept_recipe_step;
+    => nrel_main_idtf:
+    [Шаг 6: Заливаем нашу смесь]
+    (* <- lang_ru;; *);
+    => nrel_recipe_step_description:
+    [Вылейте яичную смесь в сковородку, и накройте крышкой]
+    (* <- lang_ru;; *);;
+
+..step7
+    <- concept_recipe_step;
+    => nrel_main_idtf:
+    [Шаг 7: Выпекание]
+    (* <- lang_ru;; *);
+    => nrel_recipe_step_description:
+    [Понизьте огонь до небольшого, и выпекайте омлет 10-15 минут (по желанию, переверните омлет и повторите это действие)]
+    (* <- lang_ru;; *);;
+
+..step8
+    <- concept_recipe_step;
+    => nrel_main_idtf:
+    [Шаг 8: Подача]
+    (* <- lang_ru;; *);
+    => nrel_recipe_step_description:
+    [Ваш омлет готов, приятного аппетита!]
+    (* <- lang_ru;; *);;

@@ -8,21 +8,22 @@ import asyncio
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
-op = Operator()
 conn = Connector()
+conn.safe_connect('ws://localhost:8090')
+op = Operator()
 
 @dp.message(Command('start'))
 async def start(message: types.Message):
-    op.add_user(message.from_user.id)
+    op.add_user(message.from_user.id, message.from_user.full_name)
     await message.answer("1234")
 
 @dp.message()
 async def handle(message: types.Message):
+    op.add_user(message.from_user.id, message.from_user.full_name)
     await message.answer(op.handle_message(message.from_user.id, message.from_user.full_name, message.text))
 
 async def main():
     await dp.start_polling(bot)
 
 if __name__=="__main__":
-    conn.safe_connect('ws://localhost:8090')
     asyncio.run(main())

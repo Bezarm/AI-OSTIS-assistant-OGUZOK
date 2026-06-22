@@ -1,11 +1,7 @@
 from sc_kpm import ScKeynodes
-from sc_kpm.utils import get_system_idtf
 from sc_client import client as c
 from sc_client.constants import sc_type 
-from sc_client.models import (ScAddr, ScLinkContent, ScConstruction, 
-                            ScLinkContentType, ScTemplate,
-                            ScEventSubscriptionParams)
-from sc_client.constants.common import ScEventType
+from sc_client.models import ScTemplate
 import random
 from pathlib import Path
 from classifier import MessageClassifier
@@ -59,10 +55,10 @@ class Operator():
                 return self.ingr_del(tg_id,entities)
             case 5:
                 return self.ingr_view(tg_id)
-            case 8:
-                return self.search_by_ingrs(tg_id)
-            case 9:
-                return self.recipe_select(entities)
+            # case 8:
+            #     return self.search_by_ingrs(tg_id)
+            # case 9:
+            #     return self.recipe_select(entities)
             case _:
                 return str(clasif)
             
@@ -287,22 +283,6 @@ class Operator():
         for recipe in recipes:
             answer += f"\u25AA {self._get_recipe_name(recipe)}\n"
         return answer
-
-class Keyworder():
-    def get_ingr_keys(self):
-        concept_ingr = ScKeynodes['concept_ingredient']
-        template = ScTemplate()
-        template.quintuple(
-            concept_ingr,
-            sc_type.VAR_COMMON_ARC,
-            sc_type.VAR_NODE >> '_ingr',
-            sc_type.VAR_PERM_POS_ARC,
-            ScKeynodes['nrel_inclusion']
-        )
-        result = {}
-        for temp in c.search_by_template(template):
-            result[get_system_idtf(temp.get('_ingr'))] = [Operator()._get_ingr_name(temp.get('_ingr'))]
-        return result
 
 class Connector():
     def safe_connect(self, url):

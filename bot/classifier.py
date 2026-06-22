@@ -1,7 +1,11 @@
 import re
 import pymorphy3
-from kb_operations import Keyworder
 
+from sc_kpm import ScKeynodes
+from sc_kpm.utils import get_element_system_identifier
+from sc_client import client as c
+from sc_client.models import ScTemplate
+from sc_client.constants import sc_type 
 
 # ---------------------------------------------------------------------------
 # Категории (числовые классы):
@@ -53,13 +57,14 @@ STOP_WORDS = {
 }
 
 # Ключевые слова рецептов → английские идентификаторы рецептов (scs)
+# Все ключи — НОРМАЛЬНЫЕ формы (леммы) для совпадения с lemma_set
 RECIPE_KEYWORDS = {
     "fried_potato": ["картошка"],
     "buckwheat_poridge": ["гречка", "греча"],
     "syrniki": ["сырник"],
     "omlet": ["омлет"],
-    "fried_dumplings_sour_cream": ["пельмени", "пельмень"],
-    "navy_style_macaroni_with_ground_beef_and_onions": ["макароны"],
+    "fried_dumplings_sour_cream": ["пельмень"],
+    "navy_style_macaroni_with_ground_beef_and_onions": ["макарон"],
 }
 
 RULES = [
@@ -80,10 +85,10 @@ RULES = [
     {
         "category": CATEGORY_SKILLS,
         "keywords": [
-            "уметь", "умеешь", "умение", "мочь", "можешь",
-            "научить", "помощь", "помочь", "что делать",
-            "что можешь", "что умеешь", "функция",
-            "возможность", "команда",
+            "уметь", "умение", "мочь",
+            "научить", "помощь", "помочь",
+            "что делать", "что можешь", "что умеешь",
+            "функция", "возможность", "команда",
         ],
         "patterns": [
             r"что (ты )?(умеешь|можешь|уметь|мочь)",
@@ -96,9 +101,9 @@ RULES = [
     {
         "category": CATEGORY_ADD_INGREDIENT,
         "keywords": [
-            "добавить", "добавляю", "довать", "взять",
+            "добавить", "добавлять", "довать", "взять",
             "включить", "положить", "поставить",
-            "купить", "иметь", "есть",
+            "купить", "иметь",
         ],
         "patterns": [
             r"(добавь|добавить|добавлять|довать)",
@@ -130,8 +135,8 @@ RULES = [
         "category": CATEGORY_VIEW_INGREDIENTS,
         "keywords": [
             "показать", "показывать", "посмотреть",
-            "просмотр", "список", "что есть",
-            "какие ингредиенты", "мои ингредиенты",
+            "просмотр", "список",
+            "что есть", "какие ингредиенты", "мои ингредиенты",
         ],
         "patterns": [
             r"(покажи|показать|показывать) .*(ингредиент|продукт|список)",
@@ -146,7 +151,7 @@ RULES = [
     {
         "category": CATEGORY_PREFERENCE,
         "keywords": [
-            "люблю", "нравиться", "предпочитать", "вкусный",
+            "любить", "нравиться", "предпочитать", "вкусный",
             "вкус", "сладкий", "солёный", "острый", "кислый",
             "вегетарианский", "веганский", "диета", "полезный",
             "низкокалорийный", "постный", "глютен",
@@ -208,6 +213,33 @@ RULES = [
 ]
 
 
+class Keyworder():
+    def _get_ingr_name(self, ingr):
+        template2 = ScTemplate()
+        template2.quintuple(
+            ingr,
+            sc_type.VAR_COMMON_ARC,
+            sc_type.VAR_NODE_LINK >> '_name',
+            sc_type.VAR_PERM_POS_ARC,
+            ScKeynodes['nrel_main_idtf']
+        )
+        return c.get_link_content(c.search_by_template(template2)[0].get('_name'))[0].data
+    
+    def get_ingr_keys(self):
+        concept_ingr = ScKeynodes['concept_ingredient']
+        template = ScTemplate()
+        template.quintuple(
+            concept_ingr,
+            sc_type.VAR_COMMON_ARC,
+            sc_type.VAR_NODE >> '_ingr',
+            sc_type.VAR_PERM_POS_ARC,
+            ScKeynodes['nrel_inclusion']
+        )
+        result = {}
+        for temp in c.search_by_template(template):
+            result[get_element_system_identifier(temp.get('_ingr'))] = [self._get_ingr_name(temp.get('_ingr'))]
+        return result
+
 class MessageClassifier:
     def __init__(self):
         self.morph = pymorphy3.MorphAnalyzer()
@@ -215,22 +247,22 @@ class MessageClassifier:
         self.ingr_map = Keyworder().get_ingr_keys()
 
     def classify(self, text, user_ingredients=None, offered_ingredients=None, current_recipe_step=None):
-        normalized = self.normalize(text)
         lemmas = self.tokenize(text)
         lemma_set = set(lemmas)
+        original_text = " ".join(re.findall(r"[а-яёА-ЯЁ]+", text.lower()))
 
         best_category = CATEGORY_UNKNOWN
         best_score = 0.0
 
         for rule in self.rules:
-            if self.rule_matches(rule, lemma_set, normalized):
+            if self.rule_matches(rule, lemma_set, original_text):
                 if rule["weight"] > best_score:
                     best_score = rule["weight"]
                     best_category = rule["category"]
 
         if best_category == CATEGORY_UNKNOWN:
             best_category, best_score = self.contextual_rules(
-                lemma_set, normalized, offered_ingredients, current_recipe_step)
+                lemma_set, original_text, offered_ingredients, current_recipe_step)
 
         return best_category, self.extract_entities(text, best_category)
     
@@ -247,7 +279,14 @@ class MessageClassifier:
                 lemmas.append(lemma)
         return lemmas
 
-    def rule_matches(self, rule, lemma_set, normalized_text):
+    def rule_matches(self, rule, lemma_set, original_text):
+        """Проверяет совпадение правила.
+        
+        - Одиночные keywords сравниваются с lemma_set (нормальные формы).
+        - Многокомпонентные keywords и patterns сравниваются с original_text
+          (исходный текст в нижнем регистре), чтобы корректно матчить
+          словоформы вроде «мои ингредиенты», «покажи ингредиенты» и т.д.
+        """
         negative = rule.get("negative_keywords", [])
         if negative and lemma_set & set(negative):
             return False
@@ -255,7 +294,7 @@ class MessageClassifier:
         keyword_hit = False
         for kw in rule["keywords"]:
             if " " in kw:
-                if kw in normalized_text:
+                if kw in original_text:
                     keyword_hit = True
                     break
             elif kw in lemma_set:
@@ -264,13 +303,13 @@ class MessageClassifier:
 
         pattern_hit = False
         for pat in rule["patterns"]:
-            if re.search(pat, normalized_text):
+            if re.search(pat, original_text):
                 pattern_hit = True
                 break
 
         return keyword_hit or pattern_hit
 
-    def contextual_rules(self, lemma_set, normalized_text, offered_ingredients, current_recipe_step):
+    def contextual_rules(self, lemma_set, original_text, offered_ingredients, current_recipe_step):
         # Проверка на упоминание конкретного рецепта
         for recipe_id, keywords in RECIPE_KEYWORDS.items():
             if lemma_set & set(keywords):

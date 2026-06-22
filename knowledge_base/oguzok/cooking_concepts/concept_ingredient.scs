@@ -7,9 +7,8 @@ concept_ingredient
 	(* <- lang_ru;; *);
     [ingredient]
 	(* <- lang_en;; *);
-
+-> concept_food;
 => nrel_inclusion:
-    concept_food;
     egg (* => nrel_main_idtf: [яйцо] (* <- lang_ru;; *);; <- concept_ingredient;; *);
     potapo (* => nrel_main_idtf: [картошка] (* <- lang_ru;; <- concept_ingredient;; *);; *);
     onion (* => nrel_main_idtf: [лук] (* <- lang_ru;; *);; <- concept_ingredient;; *);

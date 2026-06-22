@@ -1,23 +1,29 @@
-import telebot
-from telebot import types
+from aiogram import Bot, Dispatcher, types, F
+from aiogram.filters import Command, Filter
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, InputMediaPhoto
+import asyncio
 from config import TOKEN
 from kb_operations import Operator, Connector
+from sc_kpm import ScKeynodes
+import asyncio
 
-bot = telebot.TeleBot(TOKEN)
+bot = Bot(token=TOKEN)
+dp = Dispatcher()
 op = Operator()
 conn = Connector()
 
-@bot.message_handler(commands=['start'])
-def start(message: types.Message):
-    op.add_user(message.from_user.id, message.from_user.full_name)
-    bot.send_message(message.from_user.id, "1234")
+@dp.message(Command('start'))
+async def start(message: types.Message):
+    op.add_user(message.from_user.id)
+    await message.answer("1234")
 
-@bot.message_handler()
-def handle(message: types.Message):
-    op.add_user(message.from_user.id, message.from_user.full_name)
-    op.add_message(message.from_user.id, message.text)
+@dp.message()
+async def handle(message: types.Message):
+    await message.answer(op.handle_message(message.from_user.id, message.from_user.full_name, message.text))
+
+async def main():
+    await dp.start_polling(bot)
 
 if __name__=="__main__":
     conn.safe_connect('ws://localhost:8090')
-    conn.subscribe_to_message(bot.send_message)
-    bot.polling(none_stop=True)
+    asyncio.run(main())

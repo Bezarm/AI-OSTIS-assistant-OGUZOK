@@ -23,29 +23,33 @@ omlet
     (* <- lang_ru;; *);
 
 => nrel_has_ingredient:
-    egg
+    omlet_egg
     (*
+        <- egg;;
         <- concept_ingredient;;
         => nrel_amount: [5];;
         => nrel_type_of_unit: [шт] (* <- lang_ru;; *);;
 
     *);
-    milk
+    omlet_milk
     (*
+        <- milk;;
         <- concept_ingredient;;
         => nrel_amount: [100];;
         => nrel_type_of_unit: [мл] (* <- lang_ru;; *);;
 
     *);
-    flour
+    omlet_flour
     (*
+        <- flour;;
         <- concept_ingredient;;
         => nrel_amount: [0.5];;
         => nrel_type_of_unit: [ст. л] (* <- lang_ru;; *);;
 
     *);
-    vegetable_oil
+    omlet_vegetable_oil
     (*
+        <- vegetable_oil;;
         <- concept_ingredient;;
         => nrel_amount: [2];;
         => nrel_type_of_unit: [ст. л] (* <- lang_ru;; *);;

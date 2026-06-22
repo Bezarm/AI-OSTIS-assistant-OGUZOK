@@ -1,4 +1,4 @@
-fried_potato
+potato_pancakes
 
 <- concept_recipe;
 
@@ -23,29 +23,33 @@ fried_potato
     (* <- lang_ru;; *);
 
 => nrel_has_ingredient:
-    potato
+    potato_pancakes_potato
     (*
+        <- potato;;
         <- concept_ingredient;;
         => nrel_amount: [7];;
         => nrel_type_of_unit: [шт] (* <- lang_ru;; *);;
 
     *);
-    egg
+    potato_pancakes_egg
     (*
+        <- egg;;
         <- concept_ingredient;;
         => nrel_amount: [1-2];;
         => nrel_type_of_unit: [шт] (* <- lang_ru;; *);;
 
     *);
-    onion
+    potato_pancakes_onion
     (*
+        <- onion;;
         <- concept_ingredient;;
         => nrel_amount: [1];;
         => nrel_type_of_unit: [шт] (* <- lang_ru;; *);;
 
     *);
-    flour
+    potato_pancakes_flour
     (*
+        <- flour;;
         <- concept_ingredient;;
         => nrel_amount: [1];;
         => nrel_type_of_unit: [пол стакана] (* <- lang_ru;; *);;

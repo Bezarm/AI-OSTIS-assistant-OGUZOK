@@ -1,5 +1,6 @@
 import re
 import pymorphy3
+from kb_operations import Keyworder
 
 
 # ---------------------------------------------------------------------------
@@ -12,9 +13,8 @@ import pymorphy3
 # 5 - view ingredients
 # 6 - preference
 # 7 - allergy
-# 8 - search by ingredients (рецепты)
-# 9 - select ingredient (выбор из предложенных)
-# 10 - recipe step (пошаговый рецепт)
+# 8 - search by ingredients
+# 9 - select recipe
 # ---------------------------------------------------------------------------
 
 CATEGORY_UNKNOWN = 0
@@ -26,7 +26,7 @@ CATEGORY_VIEW_INGREDIENTS = 5
 CATEGORY_PREFERENCE = 6
 CATEGORY_ALLERGY = 7
 CATEGORY_SEARCH_RECIPE = 8
-CATEGORY_SELECT_INGREDIENT = 9
+CATEGORY_SELECT_RECIPE = 9
 
 STOP_WORDS = {
     "и", "в", "во", "не", "что", "он", "на", "я", "с", "со",
@@ -50,6 +50,16 @@ STOP_WORDS = {
     "иногда", "лучше", "чуть", "том", "такой", "им",
     "более", "всегда", "конечно", "всю", "между",
     "это", "твой", "наш", "ваш", "свой",
+}
+
+# Ключевые слова рецептов → английские идентификаторы рецептов (scs)
+RECIPE_KEYWORDS = {
+    "fried_potato": ["картошка"],
+    "buckwheat_poridge": ["гречка", "греча"],
+    "syrniki": ["сырник"],
+    "omlet": ["омлет"],
+    "fried_dumplings_sour_cream": ["пельмени", "пельмень"],
+    "navy_style_macaroni_with_ground_beef_and_onions": ["макароны"],
 }
 
 RULES = [
@@ -185,15 +195,15 @@ RULES = [
         "weight": 1.7,
     },
     {
-        "category": CATEGORY_SELECT_INGREDIENT,
-        "keywords": ["выбрать", "выбор", "беру", "подходит", "возьму"],
+        "category": CATEGORY_SELECT_RECIPE,
+        "keywords": ["рецепт", "блюдо", "приготовить", "выбрать", "выбор"],
         "patterns": [
-            r"^(да|нет|ок|ага|угу|давай)$",
+            r"рецепт .*(картошк|пельмен|сырник|омлет|гречк|макарон)",
+            r"(приготовь|сделай|свари|пожари) .*(картошк|пельмен|сырник|омлет|гречк|макарон)",
+            r"(хочу|дай|покажи) .*(рецепт|блюдо)",
             r"^(выбрать?|беру|возьму|подходит|подойдёт)$",
-            r"^(один|два|три|четыре|пять)$",
-            r"^\d+$",
         ],
-        "weight": 1.3,
+        "weight": 1.9,
     },
 ]
 
@@ -202,6 +212,7 @@ class MessageClassifier:
     def __init__(self):
         self.morph = pymorphy3.MorphAnalyzer()
         self.rules = RULES
+        self.ingr_map = Keyworder().get_ingr_keys()
 
     def classify(self, text, user_ingredients=None, offered_ingredients=None, current_recipe_step=None):
         normalized = self.normalize(text)
@@ -260,39 +271,64 @@ class MessageClassifier:
         return keyword_hit or pattern_hit
 
     def contextual_rules(self, lemma_set, normalized_text, offered_ingredients, current_recipe_step):
-        if offered_ingredients:
-            stripped = normalized_text.strip()
-            if (
-                stripped in {"да", "нет", "ок", "ага", "угу", "давай", "беру", "возьму"}
-                or re.match(r"^\d+$", stripped)
-            ):
-                return CATEGORY_SELECT_INGREDIENT, 1.5
-
-            if lemma_set & set(offered_ingredients):
-                return CATEGORY_SELECT_INGREDIENT, 1.2
+        # Проверка на упоминание конкретного рецепта
+        for recipe_id, keywords in RECIPE_KEYWORDS.items():
+            if lemma_set & set(keywords):
+                return CATEGORY_SELECT_RECIPE, 2.0
 
         return CATEGORY_UNKNOWN, 0.0
 
     def extract_entities(self, text, category):
-        entities = {}
+        entities = []
+        normalized = self.normalize(text)
 
         if category in (
             CATEGORY_ADD_INGREDIENT,
             CATEGORY_DEL_INGREDIENT,
             CATEGORY_SEARCH_RECIPE,
-            CATEGORY_SELECT_INGREDIENT,
         ):
             nouns = self.extract_nouns(text, {"accs", "gent", "datv", "ablt", "loct"})
             if nouns:
-                entities["ingredient"] = nouns
+                entities = self._map_to_ingredient_ids(nouns, normalized)
+
+        if category == CATEGORY_SELECT_RECIPE:
+            nouns = self.extract_nouns(text, {"accs", "gent", "datv", "ablt", "loct"})
+            entities = self._map_to_recipe_ids(nouns, normalized)
 
         if category == CATEGORY_ALLERGY:
-            entities["allergen"] = self.extract_nouns(text, {"gent", "datv", "accs", "loct", "ablt"})
+            nouns = self.extract_nouns(text, {"gent", "datv", "accs", "loct", "ablt"})
+            entities = self._map_to_ingredient_ids(nouns, normalized)
 
         if category == CATEGORY_PREFERENCE:
-            entities["preference"] = self.extract_nouns(text, {"accs", "gent", "datv", "loct"})
+            nouns = self.extract_nouns(text, {"accs", "gent", "datv", "loct"})
+            entities = self._map_to_ingredient_ids(nouns, normalized)
 
         return entities
+
+    def _map_to_ingredient_ids(self, nouns, normalized):
+        result = []
+        for eng_id, patterns in self.ingr_map.items():
+            for pattern in patterns:
+                if " " in pattern and pattern in normalized:
+                    if eng_id not in result:
+                        result.append(eng_id)
+                        continue
+                for noun in nouns:
+                    if noun == pattern:
+                        result.append(eng_id)
+
+        return result
+
+    def _map_to_recipe_ids(self, nouns, normalized):
+        """Маппит русские существительные → английские идентификаторы рецептов из scs."""
+        result = []
+        for recipe_id, keywords in RECIPE_KEYWORDS.items():
+            for kw in keywords:
+                if kw in nouns or kw in normalized:
+                    if recipe_id not in result:
+                        result.append(recipe_id)
+                    break
+        return result
 
     def extract_nouns(self, text, cases=None):
         tokens = re.findall(r"[а-яёА-ЯЁ]+", text.lower())

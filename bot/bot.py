@@ -4,8 +4,6 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, InputMedia
 import asyncio
 from config import TOKEN
 from kb_operations import Operator, Connector
-from sc_kpm import ScKeynodes
-
 import asyncio
 
 bot = Bot(token=TOKEN)

@@ -71,6 +71,17 @@ nrel_has_ingredient
         <- lang_ru;;
     *);;
 
+nrel_has
+<- sc_node_non_role_relation;
+<- concept_non_role_relation;
+<- concept_binary_relation;
+<- concept_ingredient_relation;
+=> nrel_main_idtf:
+    [Имеет]
+    (*
+        <- lang_ru;;
+    *);;
+
 nrel_main_idtf
 <- sc_node_non_role_relation;
 <- concept_non_role_relation;

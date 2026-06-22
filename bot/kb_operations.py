@@ -1,4 +1,6 @@
 from sc_kpm import ScKeynodes
+from sc_kpm.sc_sets import ScOrientedSet
+from sc_kpm.utils import get_element_system_identifier
 from sc_client import client as c
 from sc_client.constants import sc_type 
 from sc_client.models import ScTemplate
@@ -11,6 +13,17 @@ class Operator():
         self.userpath = Path(__file__).parent.parent/'knowledge_base'/'users'/'telegram'
         self.mc = MessageClassifier()
     
+    def _get_name(self, addr):
+        template2 = ScTemplate()
+        template2.quintuple(
+            addr,
+            sc_type.VAR_COMMON_ARC,
+            sc_type.VAR_NODE_LINK >> '_name',
+            sc_type.VAR_PERM_POS_ARC,
+            ScKeynodes['nrel_main_idtf']
+        )
+        return c.get_link_content(c.search_by_template(template2)[0].get('_name'))[0].data
+
     def add_user(self, tg_id: int, name: str):
         if not ScKeynodes.get(str(tg_id)).is_valid():
             scs = f"""{tg_id}
@@ -40,31 +53,59 @@ class Operator():
     #     )
     #     c.generate_by_template(template)
 
+    def get_step(self, recipe: str, step: int):
+        recipe = ScKeynodes[recipe]
+        template = ScTemplate()
+        template.quintuple(
+            recipe,
+            sc_type.VAR_COMMON_ARC,
+            sc_type.VAR_NODE >> '_tuple',
+            sc_type.VAR_PERM_POS_ARC,
+            ScKeynodes['nrel_recipe_step']
+        )
+        tupl = c.search_by_template(template)[0].get('_tuple')
+        steps = ScOrientedSet(set_node=tupl)
+        is_f = step==1
+        is_l = step==len(steps)
+        return self._form_step(steps.elements_list[step-1]), is_f, is_l
+    
+    def _form_step(self, addr):
+        template = ScTemplate()
+        template.quintuple(
+            addr,
+            sc_type.VAR_COMMON_ARC,
+            sc_type.VAR_NODE >> '_descr',
+            sc_type.VAR_PERM_POS_ARC,
+            ScKeynodes['nrel_recipe_step_description']
+        )
+        return f"<b>{self._get_name(addr)}</b>\n\n{c.get_link_content(c.search_by_template(template)[0].get('_descr'))[0].data}"
+
     def handle_message(self, tg_id: int, name: str, message: str):
         clasif, entities = self.mc.classify(message)
+        if clasif in (3,4,9) and not entities:
+            return 0, self.unknown_message(), None
         match clasif:
             case 0:
-                return self.unknown_message()
+                return 0, self.unknown_message(), None
             case 1:
-                return self.greetings(name)
+                return 1, self.greetings(name), None
             case 2:
-                return self.skills()
+                return 2, self.skills(), None
             case 3:
-                return self.ingr_add(tg_id,entities)
+                return 3, self.ingr_add(tg_id, entities), entities
             case 4:
-                return self.ingr_del(tg_id,entities)
+                return 4, self.ingr_del(tg_id, entities), entities
             case 5:
-                return self.ingr_view(tg_id)
-            # case 8:
-            #     return self.search_by_ingrs(tg_id)
-            # case 9:
-            #     return self.recipe_select(entities)
-            case _:
-                return str(clasif)
+                return 5, self.ingr_view(tg_id), None
+            case 8:
+                return 8, self.search_by_ingrs(tg_id), None
+            case 9:
+                return 9, self.recipe_select(entities), entities
+            # case _:
+            #     return str(clasif)
             
     def unknown_message(self):
-        return """Извини, я пока не знаю, как на это ответить.
-Попробуй переформулировать вопрос или уточнить детали — я всегда готов помочь!"""
+        return "🤔 Извини, я пока не знаю, как на это ответить.\nПопробуй переформулировать вопрос или уточнить детали — я всегда готов помочь!"
     
     def greetings(self, name):
         answers = [f"""Привет, {name}! 😊
@@ -89,33 +130,14 @@ class Operator():
             ScKeynodes['nrel_skills']
         )
         result = c.search_by_template(template)
-        answer = "Я могу:\n"
+        answer = "🤖 <b>Я могу:</b>\n\n"
         for skill in result:
-            template2 = ScTemplate()
-            template2.quintuple(
-                skill.get('_skill'),
-                sc_type.VAR_COMMON_ARC,
-                sc_type.VAR_NODE_LINK >> '_skill_text',
-                sc_type.VAR_PERM_POS_ARC,
-                ScKeynodes['nrel_main_idtf']
-            )
-            answer+=f"▪ {c.get_link_content(c.search_by_template(template2)[0].get('_skill_text'))[0].data}\n"
+            answer+=f"  ▸ {self._get_name(skill.get('_skill'))}\n"
         return answer
-    
-    def _get_ingr_name(self, ingr):
-        template2 = ScTemplate()
-        template2.quintuple(
-            ingr,
-            sc_type.VAR_COMMON_ARC,
-            sc_type.VAR_NODE_LINK >> '_name',
-            sc_type.VAR_PERM_POS_ARC,
-            ScKeynodes['nrel_main_idtf']
-        )
-        return c.get_link_content(c.search_by_template(template2)[0].get('_name'))[0].data
 
     def ingr_add(self, tg_id, entities):
         user = ScKeynodes[str(tg_id)]
-        answer = "Я добавил эти ингредиенты: "
+        names = []
         for ent in entities:
             ingr = ScKeynodes.get(str(ent))
             if ingr.is_valid():
@@ -128,16 +150,17 @@ class Operator():
                     ScKeynodes['nrel_has']
                 )
                 c.generate_by_template(template)
-                answer += f"{self._get_ingr_name(ingr)}, "
-        if answer!="Я добавил эти ингредиенты: ":
-            return answer[:-2]+"."
+                names.append(self._get_name(ingr))
+        if names:
+            items = ', '.join(names)
+            return f"✅ <b>Добавлено:</b> {items}"
         else:
             return self.unknown_message()
 
 
     def ingr_del(self, tg_id, entities):
         user = ScKeynodes[str(tg_id)]
-        answer = "Я убрал эти ингредиентам: "
+        names = []
         for ent in entities:
             ingr = ScKeynodes.get(str(ent))
             if ingr.is_valid():
@@ -150,15 +173,15 @@ class Operator():
                     ScKeynodes['nrel_has']
                 )
                 c.erase_elements(c.search_by_template(template)[0].get('_has'))
-                answer += f"{self._get_ingr_name(ingr)}, "
-        if answer!="Я убрал эти ингредиентам: ":
-            return answer[:-2]+"."
+                names.append(self._get_name(ingr))
+        if names:
+            items = ', '.join(names)
+            return f"🗑️ <b>Убрано:</b> {items}"
         else:
             return self.unknown_message()
 
     def ingr_view(self, tg_id):
         user = ScKeynodes[str(tg_id)]
-        answer = "Мы ищем по этим ингредиентам: "
         template = ScTemplate()
         template.quintuple(
             user,
@@ -167,26 +190,12 @@ class Operator():
             sc_type.VAR_PERM_POS_ARC,
             ScKeynodes['nrel_has']
         )
-        for temp in c.search_by_template(template):
-            answer += f"{self._get_ingr_name(temp.get('_ingr'))}, "
-        if answer!="Мы ищем по этим ингредиентам: ":
-            return answer[:-2]+"."
+        names = [self._get_name(temp.get('_ingr')) for temp in c.search_by_template(template)]
+        if names:
+            items = ', '.join(names)
+            return f"🛒 <b>Твои ингредиенты:</b>\n{items}"
         else:
-            return "Я пока не знаю какие ингредиенты у тебя есть."
-
-    def _get_recipe_name(self, recipe):
-        template2 = ScTemplate()
-        template2.quintuple(
-            sc_type.VAR_NODE_LINK >> '_name',
-            sc_type.VAR_COMMON_ARC,
-            recipe,
-            sc_type.VAR_PERM_POS_ARC,
-            ScKeynodes['nrel_main_idtf']
-        )
-        result = c.search_by_template(template2)
-        if result:
-            return c.get_link_content(result[0].get('_name'))[0].data
-        return str(recipe)
+            return "📭 У тебя пока нет ингредиентов. Добавь их, написав, например: <i>\"Добавь картошку\"</i>"
 
     def recipe_select(self, entities):
         """Показывает информацию о конкретном рецепте по его English scs id."""
@@ -196,8 +205,8 @@ class Operator():
         for ent in entities:
             recipe = ScKeynodes.get(str(ent))
             if recipe.is_valid():
-                name = self._get_recipe_name(recipe)
-                answer += f"📖 {name}\n\n"
+                name = self._get_name(recipe)
+                answer += f"📖 <b>{name}</b>\n\n"
                 # Время приготовления
                 template = ScTemplate()
                 template.quintuple(
@@ -209,7 +218,7 @@ class Operator():
                 )
                 res = c.search_by_template(template)
                 if res:
-                    answer += f"⏱ Время: {c.get_link_content(res[0].get('_time'))[0].data}\n"
+                    answer += f"⏱ <b>Время:</b> {c.get_link_content(res[0].get('_time'))[0].data}\n"
                 # Калорийность
                 template2 = ScTemplate()
                 template2.quintuple(
@@ -221,7 +230,7 @@ class Operator():
                 )
                 res2 = c.search_by_template(template2)
                 if res2:
-                    answer += f"🔥 Калории: {c.get_link_content(res2[0].get('_cal'))[0].data}\n"
+                    answer += f"🔥 <b>Калории:</b> {c.get_link_content(res2[0].get('_cal'))[0].data}\n"
                 # Порции
                 template3 = ScTemplate()
                 template3.quintuple(
@@ -233,7 +242,7 @@ class Operator():
                 )
                 res3 = c.search_by_template(template3)
                 if res3:
-                    answer += f"🍽 Порции: {c.get_link_content(res3[0].get('_portions'))[0].data}\n"
+                    answer += f"🍽 <b>Порции:</b> {c.get_link_content(res3[0].get('_portions'))[0].data}\n"
                 # Сложность
                 template4 = ScTemplate()
                 template4.quintuple(
@@ -245,7 +254,43 @@ class Operator():
                 )
                 res4 = c.search_by_template(template4)
                 if res4:
-                    answer += f"📊 Сложность: {c.get_link_content(res4[0].get('_diff'))[0].data}\n"
+                    answer += f"📊 <b>Сложность:</b> {c.get_link_content(res4[0].get('_diff'))[0].data}\n\n"
+                template_ingr = ScTemplate()
+                template_ingr.quintuple(
+                    recipe,
+                    sc_type.VAR_COMMON_ARC,
+                    sc_type.VAR_NODE >> '_ingr_inst',
+                    sc_type.VAR_PERM_POS_ARC,
+                    ScKeynodes['nrel_has_ingredient']
+                )
+                answer += f"📃 <b>Ингредиенты:</b>\n"
+                for ringr in c.search_by_template(template_ingr):
+                    template_ingr2 = ScTemplate()
+                    template_ingr2.quintuple(
+                        ringr,
+                        sc_type.VAR_COMMON_ARC,
+                        sc_type.VAR_NODE >> '_amount',
+                        sc_type.VAR_PERM_POS_ARC,
+                        ScKeynodes['nrel_amount']
+                    )
+                    amount = c.get_link_content(c.search_by_template(template_ingr2)[0].get('_amount'))[0].data
+                    template_ingr3 = ScTemplate()
+                    template_ingr3.quintuple(
+                        ringr,
+                        sc_type.VAR_COMMON_ARC,
+                        sc_type.VAR_NODE >> '_unit',
+                        sc_type.VAR_PERM_POS_ARC,
+                        ScKeynodes['nrel_type_of_unit']
+                    )
+                    unit = c.get_link_content(c.search_by_template(template_ingr3)[0].get('_unit'))[0].data
+                    template_concept = ScTemplate()
+                    template_concept.triple(
+                    sc_type.VAR_NODE >> '_ingr',
+                        sc_type.VAR_POS_ARC,
+                        ringr,
+                    )
+                    name = self._get_name(c.search_by_template(template_concept)[0].get('_ingr'))
+                    answer += f"🔷 {name}: <i>{amount} {unit}</i>\n"
                 answer += "\n"
         if answer:
             return answer.strip()
@@ -262,26 +307,55 @@ class Operator():
             sc_type.VAR_PERM_POS_ARC,
             ScKeynodes['nrel_has']
         )
-        user_ingrs = [t.get('_ingr') for t in c.search_by_template(template)]
-        if not user_ingrs:
-            return "У тебя пока нет ингредиентов. Добавь их сначала!"
-        recipes = set()
-        for ingr in user_ingrs:
-            template2 = ScTemplate()
-            template2.quintuple(
-                sc_type.VAR_NODE >> '_recipe',
+        user_ingr_addrs = set(t.get('_ingr') for t in c.search_by_template(template))
+        if not user_ingr_addrs:
+            return "📭 У тебя пока нет ингредиентов. Добавь их, написав, например: <i>\"Добавь яйца\"</i>"
+
+        concept_recipe = ScKeynodes['concept_recipe']
+        template_rec = ScTemplate()
+        template_rec.triple(
+            concept_recipe,
+            sc_type.VAR_POS_ARC,
+            sc_type.VAR_NODE >> '_recipe',
+        )
+        all_recipes = [t.get('_recipe') for t in c.search_by_template(template_rec)]
+
+        matching_recipes = []
+        for recipe in all_recipes:
+            template_ingr = ScTemplate()
+            template_ingr.quintuple(
+                recipe,
                 sc_type.VAR_COMMON_ARC,
-                ingr,
+                sc_type.VAR_NODE >> '_ingr_inst',
                 sc_type.VAR_PERM_POS_ARC,
                 ScKeynodes['nrel_has_ingredient']
             )
-            for rec in c.search_by_template(template2):
-                recipes.add(rec.get('_recipe'))
-        if not recipes:
-            return "К сожалению, по твоим ингредиентам ничего не нашлось."
-        answer = "Найденные рецепты:\n"
-        for recipe in recipes:
-            answer += f"\u25AA {self._get_recipe_name(recipe)}\n"
+            ingr_instances = [t.get('_ingr_inst') for t in c.search_by_template(template_ingr)]
+            if not ingr_instances:
+                continue
+
+            all_covered = True
+            for inst in ingr_instances:
+                template_concept = ScTemplate()
+                template_concept.triple(
+                    sc_type.VAR_NODE >> '_concept',
+                    sc_type.VAR_POS_ARC,
+                    inst,
+                )
+                concepts = [t.get('_concept') for t in c.search_by_template(template_concept)]
+                if not any(concept in user_ingr_addrs for concept in concepts):
+                    all_covered = False
+                    break
+
+            if all_covered:
+                matching_recipes.append(recipe)
+
+        if not matching_recipes:
+            return "😔 К сожалению, по твоим ингредиентам ничего не нашлось.\nПопробуй добавить ещё продуктов!"
+
+        answer = "🔍 <b>Найденные рецепты:</b>\n\n"
+        for recipe in matching_recipes:
+            answer += f"  ◆ <b>{self._get_name(recipe)}</b>\n"
         return answer
 
 class Connector():

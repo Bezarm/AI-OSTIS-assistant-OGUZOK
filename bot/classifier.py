@@ -33,8 +33,8 @@ CATEGORY_SEARCH_RECIPE = 8
 CATEGORY_SELECT_RECIPE = 9
 
 STOP_WORDS = {
-    "и", "в", "во", "не", "что", "он", "на", "я", "с", "со",
-    "как", "а", "то", "все", "она", "так", "его", "но", "да",
+    "и", "в", "во", "не", "он", "на", "я", "с", "со",
+    "а", "то", "все", "она", "так", "его", "но", "да",
     "ты", "к", "у", "же", "вы", "за", "бы", "по", "только",
     "ее", "мне", "было", "вот", "от", "меня", "еще", "нет",
     "о", "из", "ему", "теперь", "когда", "даже", "ну", "ли",
@@ -56,17 +56,6 @@ STOP_WORDS = {
     "это", "твой", "наш", "ваш", "свой",
 }
 
-# Ключевые слова рецептов → английские идентификаторы рецептов (scs)
-# Все ключи — НОРМАЛЬНЫЕ формы (леммы) для совпадения с lemma_set
-RECIPE_KEYWORDS = {
-    "fried_potato": ["картошка"],
-    "buckwheat_poridge": ["гречка", "греча"],
-    "syrniki": ["сырник"],
-    "omlet": ["омлет"],
-    "fried_dumplings_sour_cream": ["пельмень"],
-    "navy_style_macaroni_with_ground_beef_and_onions": ["макарон"],
-}
-
 RULES = [
     {
         "category": CATEGORY_GREETING,
@@ -80,7 +69,7 @@ RULES = [
             r"^добр(ый|ая|ое|ой|ого|ому|ым|ом)",
             r"^здравствуй",
         ],
-        "weight": 2.0,
+        "weight": 1.3,
     },
     {
         "category": CATEGORY_SKILLS,
@@ -112,7 +101,7 @@ RULES = [
             r"я (взял|взяла|купил|купила|имею)",
             r"(положи|положить|поставь|поставить)",
         ],
-        "weight": 1.5,
+        "weight": 1.4,
         "negative_keywords": ["удалить", "убрать", "убирать", "нет"],
     },
     {
@@ -129,7 +118,7 @@ RULES = [
             r"без \w+",
             r"нет .*(ингредиент|продукт)",
         ],
-        "weight": 1.5,
+        "weight": 1.4,
     },
     {
         "category": CATEGORY_VIEW_INGREDIENTS,
@@ -193,7 +182,7 @@ RULES = [
             r"(что|чем) (приготовить|сварить|пожарить|сделать)",
             r"(приготовь|свари|пожари|сделай)",
             r"(рецепт|блюдо) .*(из|с|на основе)",
-            r"(найди|найти|покажи) .*(рецепт|блюдо)",
+            r"(найди|найти|покажи|предложи) .*(рецепт|блюдо)",
             r"(что можно) (приготовить|сделать|сварить)",
             r"(есть (рецепт|блюдо))",
         ],
@@ -201,29 +190,40 @@ RULES = [
     },
     {
         "category": CATEGORY_SELECT_RECIPE,
-        "keywords": ["рецепт", "блюдо", "приготовить", "выбрать", "выбор"],
+        "keywords": ["рецепт", "блюдо", "как приготовить", "выбрать", "выбор"],
         "patterns": [
             r"рецепт .*(картошк|пельмен|сырник|омлет|гречк|макарон)",
             r"(приготовь|сделай|свари|пожари) .*(картошк|пельмен|сырник|омлет|гречк|макарон)",
             r"(хочу|дай|покажи) .*(рецепт|блюдо)",
-            r"^(выбрать?|беру|возьму|подходит|подойдёт)$",
+            r"(выбрать?|беру|возьму|подходит|подойдёт)$",
         ],
         "weight": 1.9,
+        "negative_keywords": ["что"],
     },
 ]
 
 
 class Keyworder():
-    def _get_ingr_name(self, ingr):
-        template2 = ScTemplate()
-        template2.quintuple(
-            ingr,
+    def _get_names(self, addr):
+        template = ScTemplate()
+        template.quintuple(
+            addr,
             sc_type.VAR_COMMON_ARC,
             sc_type.VAR_NODE_LINK >> '_name',
             sc_type.VAR_PERM_POS_ARC,
             ScKeynodes['nrel_main_idtf']
         )
-        return c.get_link_content(c.search_by_template(template2)[0].get('_name'))[0].data
+        template2 = ScTemplate()
+        template2.quintuple(
+            addr,
+            sc_type.VAR_COMMON_ARC,
+            sc_type.VAR_NODE_LINK >> '_name',
+            sc_type.VAR_PERM_POS_ARC,
+            ScKeynodes['nrel_idtf']
+        )
+        names = [c.get_link_content(link.get('_name'))[0].data for link in c.search_by_template(template2)]
+        names.append(c.get_link_content(c.search_by_template(template)[0].get('_name'))[0].data)
+        return names
     
     def get_ingr_keys(self):
         concept_ingr = ScKeynodes['concept_ingredient']
@@ -237,14 +237,32 @@ class Keyworder():
         )
         result = {}
         for temp in c.search_by_template(template):
-            result[get_element_system_identifier(temp.get('_ingr'))] = [self._get_ingr_name(temp.get('_ingr'))]
+            result[get_element_system_identifier(temp.get('_ingr'))] = self._get_names(temp.get('_ingr'))
+        return result
+
+    def get_rec_keys(self):
+        concept_ingr = ScKeynodes['concept_recipe']
+        template = ScTemplate()
+        template.triple(
+            concept_ingr,
+            sc_type.VAR_POS_ARC,
+            sc_type.VAR_NODE >> '_rec',
+        )
+        result = {}
+        for temp in c.search_by_template(template):
+            result[get_element_system_identifier(temp.get('_rec'))] = self._get_names(temp.get('_rec'))
         return result
 
 class MessageClassifier:
     def __init__(self):
         self.morph = pymorphy3.MorphAnalyzer()
         self.rules = RULES
-        self.ingr_map = Keyworder().get_ingr_keys()
+        self.ingr_map = {}
+        for key, value in Keyworder().get_ingr_keys().items():
+            self.ingr_map[key] = [self.normalize(v) for v in value]
+        self.rec_map = {}
+        for key, value in Keyworder().get_rec_keys().items():
+            self.rec_map[key] = [self.normalize(v) for v in value]
 
     def classify(self, text, user_ingredients=None, offered_ingredients=None, current_recipe_step=None):
         lemmas = self.tokenize(text)
@@ -260,11 +278,12 @@ class MessageClassifier:
                     best_score = rule["weight"]
                     best_category = rule["category"]
 
-        if best_category == CATEGORY_UNKNOWN:
-            best_category, best_score = self.contextual_rules(
-                lemma_set, original_text, offered_ingredients, current_recipe_step)
+        # if best_category == CATEGORY_UNKNOWN:
+        #     best_category, best_score = self.contextual_rules(
+        #         lemma_set, original_text, offered_ingredients, current_recipe_step)
 
-        return best_category, self.extract_entities(text, best_category)
+        entities = self.extract_entities(original_text, best_category)
+        return best_category, entities
     
     def normalize(self, text):
         words = re.findall(r"[а-яёА-ЯЁ]+", text.lower())
@@ -309,13 +328,13 @@ class MessageClassifier:
 
         return keyword_hit or pattern_hit
 
-    def contextual_rules(self, lemma_set, original_text, offered_ingredients, current_recipe_step):
-        # Проверка на упоминание конкретного рецепта
-        for recipe_id, keywords in RECIPE_KEYWORDS.items():
-            if lemma_set & set(keywords):
-                return CATEGORY_SELECT_RECIPE, 2.0
+    # def contextual_rules(self, lemma_set, original_text, offered_ingredients, current_recipe_step):
+    #     # Проверка на упоминание конкретного рецепта
+    #     for recipe_id, keywords in RECIPE_KEYWORDS.items():
+    #         if lemma_set & set(keywords):
+    #             return CATEGORY_SELECT_RECIPE, 2.0
 
-        return CATEGORY_UNKNOWN, 0.0
+    #     return CATEGORY_UNKNOWN, 0.0
 
     def extract_entities(self, text, category):
         entities = []
@@ -326,47 +345,36 @@ class MessageClassifier:
             CATEGORY_DEL_INGREDIENT,
             CATEGORY_SEARCH_RECIPE,
         ):
-            nouns = self.extract_nouns(text, {"accs", "gent", "datv", "ablt", "loct"})
-            if nouns:
-                entities = self._map_to_ingredient_ids(nouns, normalized)
+            entities = self._map_to_ingredient_ids(normalized)
 
         if category == CATEGORY_SELECT_RECIPE:
-            nouns = self.extract_nouns(text, {"accs", "gent", "datv", "ablt", "loct"})
-            entities = self._map_to_recipe_ids(nouns, normalized)
+            entities = self._map_to_recipe_ids(normalized)
 
         if category == CATEGORY_ALLERGY:
-            nouns = self.extract_nouns(text, {"gent", "datv", "accs", "loct", "ablt"})
-            entities = self._map_to_ingredient_ids(nouns, normalized)
+            entities = self._map_to_ingredient_ids(normalized)
 
         if category == CATEGORY_PREFERENCE:
-            nouns = self.extract_nouns(text, {"accs", "gent", "datv", "loct"})
-            entities = self._map_to_ingredient_ids(nouns, normalized)
+            entities = self._map_to_ingredient_ids(normalized)
 
         return entities
 
-    def _map_to_ingredient_ids(self, nouns, normalized):
+    def _map_to_ingredient_ids(self, normalized):
         result = []
         for eng_id, patterns in self.ingr_map.items():
             for pattern in patterns:
-                if " " in pattern and pattern in normalized:
+                if pattern in normalized:
                     if eng_id not in result:
-                        result.append(eng_id)
-                        continue
-                for noun in nouns:
-                    if noun == pattern:
                         result.append(eng_id)
 
         return result
 
-    def _map_to_recipe_ids(self, nouns, normalized):
-        """Маппит русские существительные → английские идентификаторы рецептов из scs."""
+    def _map_to_recipe_ids(self, normalized):
         result = []
-        for recipe_id, keywords in RECIPE_KEYWORDS.items():
-            for kw in keywords:
-                if kw in nouns or kw in normalized:
-                    if recipe_id not in result:
-                        result.append(recipe_id)
-                    break
+        for eng_id, patterns in self.rec_map.items():
+            for pattern in patterns:
+                if pattern in normalized:
+                    if eng_id not in result:
+                        result.append(eng_id)
         return result
 
     def extract_nouns(self, text, cases=None):

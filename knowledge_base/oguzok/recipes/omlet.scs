@@ -26,7 +26,6 @@ omlet
     omlet_egg
     (*
         <- egg;;
-        <- concept_ingredient;;
         => nrel_amount: [5];;
         => nrel_type_of_unit: [шт] (* <- lang_ru;; *);;
 
@@ -34,7 +33,6 @@ omlet
     omlet_milk
     (*
         <- milk;;
-        <- concept_ingredient;;
         => nrel_amount: [100];;
         => nrel_type_of_unit: [мл] (* <- lang_ru;; *);;
 
@@ -42,7 +40,6 @@ omlet
     omlet_flour
     (*
         <- flour;;
-        <- concept_ingredient;;
         => nrel_amount: [0.5];;
         => nrel_type_of_unit: [ст. л] (* <- lang_ru;; *);;
 
@@ -50,13 +47,12 @@ omlet
     omlet_vegetable_oil
     (*
         <- vegetable_oil;;
-        <- concept_ingredient;;
         => nrel_amount: [2];;
         => nrel_type_of_unit: [ст. л] (* <- lang_ru;; *);;
 
     *);
 
-=> concept_recipe_step: <
+=> nrel_recipe_step: <
     ..step1;
     ..step2;
     ..step3;

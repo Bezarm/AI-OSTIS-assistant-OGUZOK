@@ -27,7 +27,6 @@ myself
         <- concept_full_name;;
         => nrel_format: format_html;;
     *);
-/*rework*/
 => nrel_skills:
     .process_disciplines
     (*

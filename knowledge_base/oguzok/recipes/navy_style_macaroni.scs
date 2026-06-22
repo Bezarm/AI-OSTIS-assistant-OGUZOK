@@ -31,7 +31,6 @@ navy_style_macaroni
     navy_style_macaroni_macarones
     (*
         <- macarones;;
-        <- concept_ingredient;;
         => nrel_amount: [300];;
         => nrel_type_of_unit: [грамм] (* <- lang_ru;; *);;
 
@@ -39,7 +38,6 @@ navy_style_macaroni
     navy_style_macaroni_ground_beef
     (*
         <- ground_beef;;
-        <- concept_ingredient;;
         => nrel_amount: [300];;
         => nrel_type_of_unit: [грамм] (* <- lang_ru;; *);;
 
@@ -47,7 +45,6 @@ navy_style_macaroni
     navy_style_macaroni_onion
     (*
         <- onion;;
-        <- concept_ingredient;;
         => nrel_amount: [100];;
         => nrel_type_of_unit: [грамм] (* <- lang_ru;; *);;
 
@@ -55,19 +52,17 @@ navy_style_macaroni
     navy_style_macaroni_butter
     (*
         <- butter;;
-        <- concept_ingredient;;
         => nrel_amount: [50];;
         => nrel_type_of_unit: [грамм] (* <- lang_ru;; *);;
     *);
     navy_style_macaroni_vegetable_oil
     (*
         <- vegetable_oil;;
-        <- concept_ingredient;;
         => nrel_amount: [3];;
         => nrel_type_of_unit: [ст. ложки] (* <- lang_ru;; *);;
     *);
 
-=> concept_recipe_step: <
+=> nrel_recipe_step: <
     ..step1;
     ..step2;
     ..step3;

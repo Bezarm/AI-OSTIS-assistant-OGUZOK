@@ -31,7 +31,6 @@ fried_potato
     fried_potato_potato
     (*
         <- potato;;
-        <- concept_ingredient;;
         => nrel_amount: [700];;
         => nrel_type_of_unit: [грамм] (* <- lang_ru;; *);;
 
@@ -39,7 +38,6 @@ fried_potato
     fried_potato_vegetable_oil
     (*
         <- vegetable_oil;;
-        <- concept_ingredient;;
         => nrel_amount: [3-4];;
         => nrel_type_of_unit: [ст. ложки] (* <- lang_ru;; *);;
 
@@ -47,7 +45,6 @@ fried_potato
     fried_potato_onion
     (*
         <- onion;;
-        <- concept_ingredient;;
         => nrel_amount: [180];;
         => nrel_type_of_unit: [грамм] (* <- lang_ru;; *);;
 
@@ -55,12 +52,11 @@ fried_potato
     fried_potato_garlic
     (*
         <- garlic;;
-        <- concept_ingredient;;
         => nrel_amount: [1];;
         => nrel_type_of_unit: [зубчик] (* <- lang_ru;; *);;
     *);
 
-=> concept_recipe_step: <
+=> nrel_recipe_step: <
     ..step1;
     ..step2;
     ..step3;

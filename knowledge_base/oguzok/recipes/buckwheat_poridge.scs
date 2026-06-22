@@ -30,7 +30,6 @@ buckwheat_poridge
     buckwheat_poridge_buckwheat
     (*
         <- buckwheat;;
-        <- concept_ingredient;;
         => nrel_amount: [1];;
         => nrel_type_of_unit: [стакан] (* <- lang_ru;; *);;
 
@@ -38,13 +37,12 @@ buckwheat_poridge
     buckwheat_poridge_butter
     (*
         <- butter;;
-        <- concept_ingredient;;
         => nrel_amount: [40-50];;
         => nrel_type_of_unit: [грамм] (* <- lang_ru;; *);;
 
     *);
 
-=> concept_recipe_step: <
+=> nrel_recipe_step: <
     ..step1;
     ..step2;
     ..step3;

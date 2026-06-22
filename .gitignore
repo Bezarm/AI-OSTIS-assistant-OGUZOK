@@ -3,6 +3,7 @@ kb.bin
 .venv
 data.db
 secret.txt
+logs.log
 
 config.py
 computer_vision_polygon/models/

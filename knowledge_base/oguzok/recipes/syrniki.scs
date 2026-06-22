@@ -1,4 +1,4 @@
-omlet
+syrniki
 
 <- concept_recipe;
 
@@ -23,28 +23,28 @@ omlet
     (* <- lang_ru;; *);
 
 => nrel_has_ingredient:
-    cottage_cheese
+    syrniki_cottage_cheese
     (*
         <- concept_ingredient;;
         => nrel_amount: [400];;
         => nrel_type_of_unit: [грамм] (* <- lang_ru;; *);;
 
     *);
-    egg
+    syrniki_egg
     (*
         <- concept_ingredient;;
         => nrel_amount: [2];;
         => nrel_type_of_unit: [шт] (* <- lang_ru;; *);;
 
     *);
-    sugar
+    syrniki_sugar
     (*
         <- concept_ingredient;;
         => nrel_amount: [2-3];;
         => nrel_type_of_unit: [ст. л] (* <- lang_ru;; *);;
 
     *);
-    flour
+    syrniki_flour
     (*
         <- concept_ingredient;;
         => nrel_amount: [100];;

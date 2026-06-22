@@ -19,7 +19,7 @@ omlet
     (* <- lang_ru;; *);
 
 => nrel_dificulty_of_cooking:
-    [легко]
+    [средне]
     (* <- lang_ru;; *);
 
 => nrel_has_ingredient:

@@ -1,0 +1,115 @@
+fried_potato
+
+<- concept_recipe;
+
+=> nrel_main_idtf:
+    [Драники]
+    (* <- lang_ru;; *);
+
+=> nrel_time_of_cooking:
+    [20 минут]
+    (* <- lang_ru;; *);
+
+=> nrel_calorific_value:
+    [268 ккал на 100 г]
+    (* <- lang_ru;; *);
+
+=> nrel_count_of_portions:
+    [3 порции]
+    (* <- lang_ru;; *);
+
+=> nrel_dificulty_of_cooking:
+    [средне]
+    (* <- lang_ru;; *);
+
+=> nrel_has_ingredient:
+    potato
+    (*
+        <- concept_ingredient;;
+        => nrel_amount: [7];;
+        => nrel_type_of_unit: [шт] (* <- lang_ru;; *);;
+
+    *);
+    egg
+    (*
+        <- concept_ingredient;;
+        => nrel_amount: [1-2];;
+        => nrel_type_of_unit: [шт] (* <- lang_ru;; *);;
+
+    *);
+    onion
+    (*
+        <- concept_ingredient;;
+        => nrel_amount: [1];;
+        => nrel_type_of_unit: [шт] (* <- lang_ru;; *);;
+
+    *);
+    flour
+    (*
+        <- concept_ingredient;;
+        => nrel_amount: [1];;
+        => nrel_type_of_unit: [пол стакана] (* <- lang_ru;; *);;
+    *);
+
+=> concept_recipe_step: <
+    ..step1;
+    ..step2;
+    ..step3;
+    ..step4;
+    ..step5;
+    ..step6
+>;;
+
+..step1
+    <- concept_recipe_step;
+    => nrel_main_idtf:
+    [Шаг 1: Подготовка картофеля]
+    (* <- lang_ru;; *);
+    => nrel_recipe_step_description:
+    [Во первых, картофель должен быть крупным. Во вторых, аккуратно почистите его, вырезая все глазки]
+    (* <- lang_ru;; *);;
+
+..step2
+    <- concept_recipe_step;
+    => nrel_main_idtf:
+    [Шаг 2: Трём]
+    (* <- lang_ru;; *);
+    => nrel_recipe_step_description:
+    [Возьмите тёрку, и на отверстиях среднего размера натерите весь картофель и луковицу]
+    (* <- lang_ru;; *);;
+
+..step3
+    <- concept_recipe_step;
+    => nrel_main_idtf:
+    [Шаг 3: Бьём яйца и добавляем муку]
+    (* <- lang_ru;; *);
+    => nrel_recipe_step_description:
+    [В тесто разбиваем несколько яиц для клейкости, и добавьте муку]
+    (* <- lang_ru;; *);;
+
+..step4
+    <- concept_recipe_step;
+    => nrel_main_idtf:
+    [Шаг 4: Жарим]
+    (* <- lang_ru;; *);
+    => nrel_recipe_step_description:
+    [Подготовьте сковородку, и ложкой выложите тесто]
+    (* <- lang_ru;; *);;
+
+..step5
+    <- concept_recipe_step;
+    => nrel_main_idtf:
+    [Шаг 5: Процесс жарки]
+    (* <- lang_ru;; *);
+    => nrel_recipe_step_description:
+    [Когда драники приобретают золотистую корочку, переверните их]
+    (* <- lang_ru;; *);;
+
+..step6
+    <- concept_recipe_step;
+    => nrel_main_idtf:
+    [Шаг 6: Подача]
+    (* <- lang_ru;; *);
+    => nrel_recipe_step_description:
+    [Готовые драники выложьте на тарелку, и подавайте к столу, приятного аппетита!]
+    (* <- lang_ru;; *);;

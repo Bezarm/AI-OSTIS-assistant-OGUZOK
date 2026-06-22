@@ -9,29 +9,160 @@ concept_ingredient
 	(* <- lang_en;; *);
 -> concept_food;
 => nrel_inclusion:
-    egg (* => nrel_main_idtf: [яйцо] (* <- lang_ru;; *);; <- concept_ingredient;; *);
-    potapo (* => nrel_main_idtf: [картошка] (* <- lang_ru;; <- concept_ingredient;; *);; *);
-    onion (* => nrel_main_idtf: [лук] (* <- lang_ru;; *);; <- concept_ingredient;; *);
-    sugar (* => nrel_main_idtf: [сахар] (* <- lang_ru;; *);; <- concept_ingredient;; *);
-    carrot (* => nrel_main_idtf: [морковка] (* <- lang_ru;; *);; <- concept_ingredient;; *);
-    vegetable_oil (* => nrel_main_idtf: [растительное масло] (* <- lang_ru;; *);; <- concept_ingredient;; *);
-    flour (* => nrel_main_idtf: [мука] (* <- lang_ru;; *);; <- concept_ingredient;; *);
-    butter (* => nrel_main_idtf: [сливочное масло] (* <- lang_ru;; *);; <- concept_ingredient;; *);
-    milk (* => nrel_main_idtf: [молоко] (* <- lang_ru;; *);; <- concept_ingredient;; *);
-    rice (* => nrel_main_idtf: [рис] (* <- lang_ru;; *);; <- concept_ingredient;; *);
-    garlic (* => nrel_main_idtf: [чеснок] (* <- lang_ru;; *);; <- concept_ingredient;; *);
-    cucumber (* => nrel_main_idtf: [огурец] (* <- lang_ru;; *);; <- concept_ingredient;; *);
-    tomato (* => nrel_main_idtf: [помидор] (* <- lang_ru;; *);; <- concept_ingredient;; *);
-    buckwheat (* => nrel_main_idtf: [гречка] (* <- lang_ru;; *);; <- concept_ingredient;; *);
-    cabbage (* => nrel_main_idtf: [капуста] (* <- lang_ru;; *);; <- concept_ingredient;; *);
-    bread (* => nrel_main_idtf: [хлеб] (* <- lang_ru;; *);; <- concept_ingredient;; *);
-    cheese (* => nrel_main_idtf: [сыр] (* <- lang_ru;; *);; <- concept_ingredient;; *);
-    apples (* => nrel_main_idtf: [яблоко] (* <- lang_ru;; *);; <- concept_ingredient;; *);
-    pelmeni (* => nrel_main_idtf: [пельмени] (* <- lang_ru;; *);; <- concept_ingredient;; *);
-    macarones (* => nrel_main_idtf: [макароны] (* <- lang_ru;; *);; <- concept_ingredient;; *);
-    sour_cream (* => nrel_main_idtf: [сметана] (* <- lang_ru;; *);; <- concept_ingredient;; *);
-    ground_beef (* => nrel_main_idtf: [фарш] (* <- lang_ru;; *);; <- concept_ingredient;; *);
-    cottage_cheese (* => nrel_main_idtf: [творог] (* <- lang_ru;; *);; <- concept_ingredient;; *);
+    egg 
+    (*
+        => nrel_main_idtf: [яйцо] (* <- lang_ru;; *);;
+        => nrel_idtf:
+            [Яйки] (* <- lang_ru;; *);
+            [Яечки] (* <- lang_ru;; *);;
+        <- concept_ingredient;;
+
+    *);
+    potapo 
+    (* 
+        => nrel_main_idtf: [картошка] (* <- lang_ru;; *);;
+        => nrel_idtf:
+            [Картофель] (* <- lang_ru;; *);
+            [Бульба] (* <- lang_ru;; *);;
+        <- concept_ingredient;; 
+    *);
+    onion 
+    (* 
+        => nrel_main_idtf: [лук] (* <- lang_ru;; *);;
+        => nrel_idtf:
+            [Репчатый лук] (* <- lang_ru;; *);
+            [Луковица] (* <- lang_ru;; *);;
+        <- concept_ingredient;; 
+    *);
+    sugar 
+    (*
+        => nrel_main_idtf: [сахар] (* <- lang_ru;; *);;
+        => nrel_idtf:
+            [Сахарок] (* <- lang_ru;; *);;
+        <- concept_ingredient;; 
+    *);
+    carrot 
+    (*
+        => nrel_main_idtf: [морковка] (* <- lang_ru;; *);;
+        => nrel_idtf:
+            [Морковь] (* <- lang_ru;; *);
+            [Морква] (* <- lang_ru;; *);;
+        <- concept_ingredient;; 
+    *);
+    vegetable_oil 
+    (* 
+        => nrel_main_idtf: [растительное масло] (* <- lang_ru;; *);;
+        => nrel_idtf:
+            [Подсолнечное масло] (* <- lang_ru;; *);
+            [Рапсовое масло] (* <- lang_ru;; *);
+            [Оливковое масло] (* <- lang_ru;; *);;
+        <- concept_ingredient;; 
+    *);
+    flour 
+    (* 
+        => nrel_main_idtf: [мука] (* <- lang_ru;; *);;
+        => nrel_idtf:
+            [Кукурузная мука] (* <- lang_ru;; *);
+            [Рисовая мука] (* <- lang_ru;; *);;
+        <- concept_ingredient;; *);
+    butter 
+    (* 
+        => nrel_main_idtf: [сливочное масло] (* <- lang_ru;; *);;
+        => nrel_idtf:
+            [Масло] (* <- lang_ru;; *);;
+        <- concept_ingredient;;
+    *);
+    milk 
+    (*  => nrel_main_idtf: [молоко] (* <- lang_ru;; *);;
+        <- concept_ingredient;;
+    *);
+    rice 
+    (* 
+        => nrel_main_idtf: [рис] (* <- lang_ru;; *);;
+        <- concept_ingredient;;
+    *);
+    garlic 
+    (* 
+        => nrel_main_idtf: [чеснок] (* <- lang_ru;; *);;
+        <- concept_ingredient;;
+    *);
+    cucumber 
+    (*  
+        => nrel_main_idtf: [огурец] (* <- lang_ru;; *);;
+        <- concept_ingredient;;
+    *);
+    tomato 
+    (* 
+        => nrel_main_idtf: [помидор] (* <- lang_ru;; *);;
+        => nrel_idtf:
+            [Томат] (* <- lang_ru;; *);;
+        <- concept_ingredient;;
+    *);
+    buckwheat 
+    (* 
+        => nrel_main_idtf: [гречка] (* <- lang_ru;; *);;
+        => nrel_idtf:
+            [Гречневая крупа] (* <- lang_ru;; *);;
+        <- concept_ingredient;;
+    *);
+    cabbage 
+    (* 
+        => nrel_main_idtf: [капуста] (* <- lang_ru;; *);;
+        => nrel_idtf:
+            [Кочан] (* <- lang_ru;; *);;
+        <- concept_ingredient;;
+    *);
+    bread 
+    (* 
+        => nrel_main_idtf: [хлеб] (* <- lang_ru;; *);;
+        => nrel_idtf:
+            [Батон] (* <- lang_ru;; *);
+            [Хлебец] (* <- lang_ru;; *);
+            [Буханка] (* <- lang_ru;; *);;
+        <- concept_ingredient;; 
+    *);
+    cheese 
+    (* 
+        => nrel_main_idtf: [сыр] (* <- lang_ru;; *);;
+        => nrel_idtf:
+            [Чеддер] (* <- lang_ru;; *);
+            [Моцаррела] (* <- lang_ru;; *);;
+        <- concept_ingredient;;
+    *);
+    apples 
+    (* 
+        => nrel_main_idtf: [яблоко] (* <- lang_ru;; *);;
+        <- concept_ingredient;;
+    *);
+    pelmeni 
+    (* 
+        => nrel_main_idtf: [пельмени] (* <- lang_ru;; *);;
+        <- concept_ingredient;;
+    *);
+    macarones 
+    (* 
+        => nrel_main_idtf: [макароны] (* <- lang_ru;; *);;
+        => nrel_idtf:
+            [Макарошки] (* <- lang_ru;; *);
+            [Спагетти] (* <- lang_ru;; *);
+            [Паста] (* <- lang_ru;; *);;
+        <- concept_ingredient;; 
+    *);
+    sour_cream 
+    (*  
+        => nrel_main_idtf: [сметана] (* <- lang_ru;; *);;
+        <- concept_ingredient;;
+    *);
+    ground_beef 
+    (* 
+        => nrel_main_idtf: [фарш] (* <- lang_ru;; *);;
+        <- concept_ingredient;;
+    *);
+    cottage_cheese 
+    (* 
+        => nrel_main_idtf: [творог] (* <- lang_ru;; *);;
+        <- concept_ingredient;;
+    *);
 
 => nrel_note:
     [Ингредиент — это составная часть блюда, используемая для приготовления пищи.

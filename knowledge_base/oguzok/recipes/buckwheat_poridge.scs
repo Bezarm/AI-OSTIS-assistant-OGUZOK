@@ -3,8 +3,12 @@ buckwheat_poridge
 <- concept_recipe;
 
 => nrel_main_idtf:
-    [Греча]
+    [Гречневая каша]
     (* <- lang_ru;; *);
+
+=> nrel_idtf:
+    [Гречка] (* <- lang_ru;; *);
+    [Греча] (* <- lang_ru;; *);
 
 => nrel_time_of_cooking:
     [35 минут]
@@ -23,15 +27,17 @@ buckwheat_poridge
     (* <- lang_ru;; *);
 
 => nrel_has_ingredient:
-    buckwheat
+    buckwheat_poridge_buckwheat
     (*
+        <- buckwheat;;
         <- concept_ingredient;;
         => nrel_amount: [1];;
         => nrel_type_of_unit: [стакан] (* <- lang_ru;; *);;
 
     *);
-    butter
+    buckwheat_poridge_butter
     (*
+        <- butter;;
         <- concept_ingredient;;
         => nrel_amount: [40-50];;
         => nrel_type_of_unit: [грамм] (* <- lang_ru;; *);;

@@ -1,10 +1,15 @@
-fried_dumplings_sour_cream
+fried_dumplings
 
 <- concept_recipe;
 
 => nrel_main_idtf:
     [Жареные пельмени]
     (* <- lang_ru;; *);
+
+=> nrel_idtf:
+    [Жареные пельмеши] (* <- lang_ru;; *);
+    [Пельмени] (* <- lang_ru;; *);
+    [Пельмешки] (* <- lang_ru;; *);
 
 => nrel_time_of_cooking:
     [25 минут]
@@ -23,29 +28,33 @@ fried_dumplings_sour_cream
     (* <- lang_ru;; *);
 
 => nrel_has_ingredient:
-    pelmeni
+    fried_dumplings_pelmeni
     (*
+        <- pelmeni;;
         <- concept_ingredient;;
         => nrel_amount: [400];;
         => nrel_type_of_unit: [грамм] (* <- lang_ru;; *);;
 
     *);
-    sour_cream
+    fried_dumplings_sour_cream
     (*
+        <- sour_cream;;
         <- concept_ingredient;;
         => nrel_amount: [100];;
         => nrel_type_of_unit: [мл] (* <- lang_ru;; *);;
 
     *);
-    cheese
+    fried_dumplings_cheese
     (*
+        <- cheese;;
         <- concept_ingredient;;
         => nrel_amount: [100];;
         => nrel_type_of_unit: [грамм] (* <- lang_ru;; *);;
 
     *);
-    butter
+    fried_dumplings_butter
     (*
+        <- butter;;
         <- concept_ingredient;;
         => nrel_amount: [1];;
         => nrel_type_of_unit: [ст. ложка] (* <- lang_ru;; *);;

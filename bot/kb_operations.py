@@ -11,7 +11,7 @@ from classifier import MessageClassifier
 
 class Operator():
     def __init__(self):
-        self.userpath = Path(__file__).parent.parent/'knowledge_baze'/'users'/'telegram'
+        self.userpath = Path(__file__).parent.parent/'knowledge_base'/'users'/'telegram'
     
     def add_user(self, tg_id: int, name: str):
         if not ScKeynodes.get(str(tg_id)).is_valid():

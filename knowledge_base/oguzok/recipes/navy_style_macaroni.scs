@@ -1,10 +1,15 @@
-navy_style_macaroni_with_ground_beef_and_onions
+navy_style_macaroni
 
 <- concept_recipe;
 
 => nrel_main_idtf:
     [Макароны по-флотски]
     (* <- lang_ru;; *);
+
+=> nrel_idtf:
+    [Макароны по флотски] (* <- lang_ru;; *);
+    [Макарошки по флотски] (* <- lang_ru;; *);
+    [Макароны с мясом] (* <- lang_ru;; *);
 
 => nrel_time_of_cooking:
     [30 минут]
@@ -23,35 +28,40 @@ navy_style_macaroni_with_ground_beef_and_onions
     (* <- lang_ru;; *);
 
 => nrel_has_ingredient:
-    macarones
+    navy_style_macaroni_macarones
     (*
+        <- macarones;;
         <- concept_ingredient;;
         => nrel_amount: [300];;
         => nrel_type_of_unit: [грамм] (* <- lang_ru;; *);;
 
     *);
-    ground_beef
+    navy_style_macaroni_ground_beef
     (*
+        <- ground_beef;;
         <- concept_ingredient;;
         => nrel_amount: [300];;
         => nrel_type_of_unit: [грамм] (* <- lang_ru;; *);;
 
     *);
-    onion
+    navy_style_macaroni_onion
     (*
+        <- onion;;
         <- concept_ingredient;;
         => nrel_amount: [100];;
         => nrel_type_of_unit: [грамм] (* <- lang_ru;; *);;
 
     *);
-    butter
+    navy_style_macaroni_butter
     (*
+        <- butter;;
         <- concept_ingredient;;
         => nrel_amount: [50];;
         => nrel_type_of_unit: [грамм] (* <- lang_ru;; *);;
     *);
-    vegetable_oil
+    navy_style_macaroni_vegetable_oil
     (*
+        <- vegetable_oil;;
         <- concept_ingredient;;
         => nrel_amount: [3];;
         => nrel_type_of_unit: [ст. ложки] (* <- lang_ru;; *);;

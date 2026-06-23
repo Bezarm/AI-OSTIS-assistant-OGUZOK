@@ -25,24 +25,28 @@ syrniki
 => nrel_has_ingredient:
     syrniki_cottage_cheese
     (*
+        <- cottage_cheese;;
         => nrel_amount: [400];;
         => nrel_type_of_unit: [грамм] (* <- lang_ru;; *);;
 
     *);
     syrniki_egg
     (*
+        <- egg;;
         => nrel_amount: [2];;
         => nrel_type_of_unit: [шт] (* <- lang_ru;; *);;
 
     *);
     syrniki_sugar
     (*
+        <- sugar;;
         => nrel_amount: [2-3];;
         => nrel_type_of_unit: [ст. л] (* <- lang_ru;; *);;
 
     *);
     syrniki_flour
     (*
+        <- flour;;
         => nrel_amount: [100];;
         => nrel_type_of_unit: [грамм] (* <- lang_ru;; *);;
 

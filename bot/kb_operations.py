@@ -138,6 +138,7 @@ class Operator():
     def ingr_add(self, tg_id, entities):
         user = ScKeynodes[str(tg_id)]
         names = []
+        is_rep = False
         for ent in entities:
             ingr = ScKeynodes.get(str(ent))
             if ingr.is_valid():
@@ -149,11 +150,16 @@ class Operator():
                     sc_type.VAR_PERM_POS_ARC,
                     ScKeynodes['nrel_has']
                 )
-                c.generate_by_template(template)
-                names.append(self._get_name(ingr))
+                if len(c.search_by_template(template)) > 0:
+                    is_rep = True
+                else:
+                    c.generate_by_template(template)
+                    names.append(self._get_name(ingr))
         if names:
             items = ', '.join(names)
             return f"✅ <b>Добавлено:</b> {items}"
+        elif is_rep:
+            return f"🤨 Кажется, это у вас уже есть."
         else:
             return self.unknown_message()
 
@@ -161,6 +167,7 @@ class Operator():
     def ingr_del(self, tg_id, entities):
         user = ScKeynodes[str(tg_id)]
         names = []
+        is_o = False
         for ent in entities:
             ingr = ScKeynodes.get(str(ent))
             if ingr.is_valid():
@@ -172,11 +179,16 @@ class Operator():
                     sc_type.VAR_PERM_POS_ARC,
                     ScKeynodes['nrel_has']
                 )
-                c.erase_elements(c.search_by_template(template)[0].get('_has'))
-                names.append(self._get_name(ingr))
+                if len(c.search_by_template(template)) > 0:
+                    c.erase_elements(c.search_by_template(template)[0].get('_has'))
+                    names.append(self._get_name(ingr))
+                else:
+                    is_o = True
         if names:
             items = ', '.join(names)
             return f"🗑️ <b>Убрано:</b> {items}"
+        elif is_o:
+            return f"🤨 Кажется, этого у вас и не было."
         else:
             return self.unknown_message()
 
@@ -198,7 +210,6 @@ class Operator():
             return "📭 У тебя пока нет ингредиентов. Добавь их, написав, например: <i>\"Добавь картошку\"</i>"
 
     def recipe_select(self, entities):
-        """Показывает информацию о конкретном рецепте по его English scs id."""
         if not entities:
             return self.unknown_message()
         answer = ""
@@ -267,18 +278,18 @@ class Operator():
                 for ringr in c.search_by_template(template_ingr):
                     template_ingr2 = ScTemplate()
                     template_ingr2.quintuple(
-                        ringr,
+                        ringr.get('_ingr_inst'),
                         sc_type.VAR_COMMON_ARC,
-                        sc_type.VAR_NODE >> '_amount',
+                        sc_type.VAR_NODE_LINK >> '_amount',
                         sc_type.VAR_PERM_POS_ARC,
                         ScKeynodes['nrel_amount']
                     )
                     amount = c.get_link_content(c.search_by_template(template_ingr2)[0].get('_amount'))[0].data
                     template_ingr3 = ScTemplate()
                     template_ingr3.quintuple(
-                        ringr,
+                        ringr.get('_ingr_inst'),
                         sc_type.VAR_COMMON_ARC,
-                        sc_type.VAR_NODE >> '_unit',
+                        sc_type.VAR_NODE_LINK >> '_unit',
                         sc_type.VAR_PERM_POS_ARC,
                         ScKeynodes['nrel_type_of_unit']
                     )
@@ -287,7 +298,7 @@ class Operator():
                     template_concept.triple(
                     sc_type.VAR_NODE >> '_ingr',
                         sc_type.VAR_POS_ARC,
-                        ringr,
+                        ringr.get('_ingr_inst'),
                     )
                     name = self._get_name(c.search_by_template(template_concept)[0].get('_ingr'))
                     answer += f"🔷 {name}: <i>{amount} {unit}</i>\n"

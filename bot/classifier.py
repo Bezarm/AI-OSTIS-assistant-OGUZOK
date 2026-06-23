@@ -356,6 +356,8 @@ class MessageClassifier:
         if category == CATEGORY_PREFERENCE:
             entities = self._map_to_ingredient_ids(normalized)
 
+        if 'butter' in entities and 'vegetable_oil' in entities and not 'сливочный' in normalized:
+            entities.remove('butter')
         return entities
 
     def _map_to_ingredient_ids(self, normalized):

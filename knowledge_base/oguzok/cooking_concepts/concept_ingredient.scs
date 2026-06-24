@@ -18,7 +18,7 @@ concept_ingredient
         <- concept_ingredient;;
 
     *);
-    potapo 
+    potato 
     (* 
         => nrel_main_idtf: [картошка] (* <- lang_ru;; *);;
         => nrel_idtf:

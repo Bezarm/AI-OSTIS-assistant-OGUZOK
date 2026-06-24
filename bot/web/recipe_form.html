@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OGUZOK — Новый рецепт</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg:        #0f0f12;
+            --surface:   #1a1a22;
+            --surface-2: #22222e;
+            --border:    #2e2e3e;
+            --accent:    #0b6df5;
+            --accent-2:  #3c8ffb;
+            --text:      #f0f0f5;
+            --text-dim:  #9ca3af;
+            --danger:    #ef4444;
+            --success:   #22c55e;
+            --radius:    14px;
+            --radius-sm: 10px;
+            --shadow:    0 8px 32px rgba(0,0,0,.45);
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 40px 16px 80px;
+            line-height: 1.6;
+        }
+
+        /* ─── Background Decoration ─────────────────────────── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 600px 400px at 20% 10%, rgba(245,158,11,.08), transparent),
+                radial-gradient(ellipse 500px 500px at 80% 80%, rgba(251,146,60,.06), transparent);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ─── Form Container ────────────────────────────────── */
+        .form-wrapper {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 720px;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+
+        .form-header .logo {
+            font-size: 42px;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .form-header h1 {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .form-header p {
+            color: var(--text-dim);
+            font-size: 15px;
+            margin-top: 6px;
+        }
+
+        /* ─── Card ──────────────────────────────────────────── */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 32px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            transition: border-color .25s;
+        }
+
+        .card:hover { border-color: #3a3a50; }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .8px;
+            color: var(--accent);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title .icon {
+            font-size: 20px;
+        }
+
+        /* ─── Form Elements ─────────────────────────────────── */
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dim);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            background: var(--surface-2);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 12px 16px;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 15px;
+            outline: none;
+            transition: border-color .2s, box-shadow .2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(245,158,11,.15);
+        }
+
+        textarea { resize: vertical; min-height: 80px; }
+
+        input::placeholder, textarea::placeholder { color: #555568; }
+
+        select { cursor: pointer; appearance: none; }
+
+        /* ─── Grid ──────────────────────────────────────────── */
+        .grid { display: grid; gap: 16px; }
+        .grid-2 { grid-template-columns: 1fr 1fr; }
+        .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+        @media (max-width: 560px) {
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+        }
+
+        /* ─── Ingredient Row ────────────────────────────────── */
+        .ingredient-list { display: flex; flex-direction: column; gap: 10px; }
+
+        .ingredient-row {
+            display: grid;
+            grid-template-columns: 1fr 100px 110px 40px;
+            gap: 8px;
+            align-items: end;
+            animation: slideIn .25s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 560px) {
+            .ingredient-row {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* ─── Step Row ──────────────────────────────────────── */
+        .step-list { display: flex; flex-direction: column; gap: 12px; }
+
+        .step-row {
+            position: relative;
+            background: var(--surface-2);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            animation: slideIn .25s ease;
+        }
+
+        .step-number {
+            position: absolute;
+            top: -10px;
+            left: 14px;
+            background: var(--accent);
+            color: #000;
+            font-size: 12px;
+            font-weight: 800;
+            padding: 2px 10px;
+            border-radius: 20px;
+        }
+
+        .step-row textarea { margin-top: 4px; }
+
+        /* ─── Buttons ───────────────────────────────────────── */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 10px 18px;
+            border-radius: var(--radius-sm);
+            border: 1.5px solid transparent;
+            cursor: pointer;
+            transition: all .2s;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border-color: var(--border);
+            color: var(--text-dim);
+        }
+        .btn-ghost:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(245,158,11,.06);
+        }
+
+        .btn-danger {
+            background: transparent;
+            border-color: var(--danger);
+            color: var(--danger);
+            padding: 6px 10px;
+            font-size: 16px;
+            line-height: 1;
+        }
+        .btn-danger:hover {
+            background: rgba(239,68,68,.12);
+        }
+
+        .btn-submit {
+            width: 100%;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            color: #000;
+            font-size: 16px;
+            font-weight: 700;
+            padding: 14px 24px;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: transform .15s, box-shadow .2s;
+            box-shadow: 0 4px 20px rgba(245,158,11,.25);
+        }
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(245,158,11,.35);
+        }
+        .btn-submit:active { transform: translateY(0); }
+
+        /* ─── Helpers ───────────────────────────────────────── */
+        .mt-12 { margin-top: 12px; }
+        .mt-20 { margin-top: 20px; }
+        .flex-between { display: flex; justify-content: space-between; align-items: center; }
+
+        /* ─── Tooltip ───────────────────────────────────────── */
+        .field-hint {
+            font-size: 12px;
+            color: var(--text-dim);
+            opacity: .7;
+            margin-top: 4px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="form-wrapper">
+
+{% if success %}
+<div class="card" style="text-align:center; padding:48px 32px;">
+    <div style="font-size:64px; line-height:1; margin-bottom:16px;">✅</div>
+    <h1 style="font-size:24px; font-weight:700; margin-bottom:8px;">Рецепт отправлен</h1>
+    <p style="color:var(--text-dim); font-size:15px; margin-bottom:6px;">
+        {% if recipe_name %}<b>{{ recipe_name }}</b> — {% endif %}рецепт отправлен на модерацию.
+    </p>
+    <p style="color:var(--text-dim); font-size:14px; margin-bottom:32px;">
+        После проверки он появится в базе знаний бота.
+    </p>
+    <a href="/add-recipe" class="btn-submit" style="display:inline-flex; text-decoration:none; width:auto;">
+        ➕ Добавить ещё рецепт
+    </a>
+</div>
+
+{% else %}
+    <div class="form-header">
+        <h1>Новый рецепт</h1>
+        <p>Добавьте свой рецепт в базу знаний OGUZOK</p>
+    </div>
+
+    <form id="recipeForm" autocomplete="off" action="/add-recipe" method="post">
+        <div class="card">
+            <div class="card-title"><span class="icon">📝</span> Основная информация</div>
+
+            <div class="grid" style="gap:14px">
+                <div>
+                    <label for="sid">system identifier</label>
+                    <input type="text" id="sid" name="sid" placeholder="Например: butter" required>
+                </div>
+                <div>
+                    <label for="recipeName">Название блюда</label>
+                    <input type="text" id="recipeName" name="name" placeholder="Например: Сырники" required>
+                </div>
+
+                <div class="grid grid-3">
+                    <div>
+                        <label for="cookTime">Время готовки</label>
+                        <input type="text" id="cookTime" name="time" placeholder="30 минут">
+                    </div>
+                    <div>
+                        <label for="portions">Порций</label>
+                        <input type="text" id="portions" name="portions" placeholder="2 порции">
+                    </div>
+                    <div>
+                        <label for="difficulty">Сложность</label>
+                        <select id="difficulty" name="difficulty">
+                            <option value="легко">🟢 Легко</option>
+                            <option value="средне" selected>🟡 Средне</option>
+                            <option value="сложно">🔴 Сложно</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="calories">Калорийность</label>
+                    <input type="text" id="calories" name="calories" placeholder="200 ккал на 100 г" style="max-width:280px">
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title"><span class="icon">🥘</span> Ингредиенты</div>
+
+            <div class="ingredient-list" id="ingredientList">
+                <div class="ingredient-row">
+                    <div>
+                        <label for="ingr_name_0">Ингредиент</label>
+                        <select id="ingr_name_0" name="ingr_name_0">
+                            {% for k, v in ingrs.items() %}
+                            <option value="{{ k }}">{{ v[-1] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label>Кол-во</label>
+                        <input type="text" name="ingr_amount_0" placeholder="400">
+                    </div>
+                    <div>
+                        <label>Ед. изм.</label>
+                        <select name="ingr_unit_0">
+                            <option value="грамм">грамм</option>
+                            <option value="мл">мл</option>
+                            <option value="шт">шт</option>
+                            <option value="ст. ложка">ст. ложка</option>
+                            <option value="ч. ложка">ч. ложка</option>
+                            <option value="щепотка">щепотка</option>
+                            <option value="кусок">кусок</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>&nbsp;</label>
+                        <button type="button" class="btn btn-danger" onclick="removeRow(this)" title="Удалить">✕</button>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-ghost mt-12" onclick="addIngredient()">＋ Добавить ингредиент</button>
+        </div>
+        <div class="card">
+            <div class="card-title"><span class="icon">👨‍🍳</span> Шаги приготовления</div>
+
+            <div class="step-list" id="stepList">
+                <div class="step-row">
+                    <span class="step-number">1</span>
+                    <div style="margin-top:6px">
+                        <label>Заголовок шага</label>
+                        <input type="text" name="step_title_1" placeholder="Подготовка ингредиентов">
+                    </div>
+                    <div>
+                        <label>Описание</label>
+                        <textarea name="step_desc_1" rows="2" placeholder="Подробно опишите, что нужно сделать…"></textarea>
+                    </div>
+                    <button type="button" class="btn btn-danger" style="position:absolute;top:12px;right:12px" onclick="removeStep(this)" title="Удалить шаг">✕</button>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-ghost mt-12" onclick="addStep()">＋ Добавить шаг</button>
+        </div>
+        <button type="submit" class="btn-submit">
+            🍳 Сохранить рецепт
+        </button>
+
+    </form>
+</div>
+{% endif %}
+<script>
+    function addIngredient() {
+        const list = document.getElementById('ingredientList');
+        const idx = list.children.length;
+        const row = document.createElement('div');
+        row.className = 'ingredient-row';
+        row.innerHTML = `
+            <div>
+                <label for="ingr_name_${idx}">Ингредиент</label>
+                <select id="ingr_name_${idx}" name="ingr_name_${idx}">
+                    {% for k, v in ingrs.items() %}
+                    <option value="{{ k }}">{{ v[-1] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label>Кол-во</label>
+                <input type="text" name="ingr_amount_${idx}" placeholder="2">
+            </div>
+            <div>
+                <label>Ед. изм.</label>
+                <select name="ingr_unit_${idx}">
+                    <option value="грамм">грамм</option>
+                    <option value="мл">мл</option>
+                    <option value="шт">шт</option>
+                    <option value="ст. ложка">ст. ложка</option>
+                    <option value="ч. ложка">ч. ложка</option>
+                    <option value="щепотка">щепотка</option>
+                    <option value="кусок">кусок</option>
+                </select>
+            </div>
+            <div>
+                <label>&nbsp;</label>
+                <button type="button" class="btn btn-danger" onclick="removeRow(this)" title="Удалить">✕</button>
+            </div>`;
+        list.appendChild(row);
+        row.querySelector('input').focus();
+    }
+
+    function removeRow(btn) {
+        const row = btn.closest('.ingredient-row');
+        const list = document.getElementById('ingredientList');
+        if (list.children.length > 1) {
+            row.style.opacity = '0';
+            row.style.transform = 'translateX(20px)';
+            row.style.transition = 'all .2s';
+            setTimeout(() => {
+                row.remove();
+                renumberIngredients();
+            }, 200);
+        } else {
+            row.querySelector('input').focus();
+        }
+    }
+
+    function renumberIngredients() {
+        const list = document.getElementById('ingredientList');
+        Array.from(list.children).forEach((row, i) => {
+            const nameInput = row.querySelector('input[name^="ingr_name_"]');
+            const amountInput = row.querySelector('input[name^="ingr_amount_"]');
+            const unitSelect = row.querySelector('select[name^="ingr_unit_"]');
+            if (nameInput) nameInput.name = `ingr_name_${i}`;
+            if (amountInput) amountInput.name = `ingr_amount_${i}`;
+            if (unitSelect) unitSelect.name = `ingr_unit_${i}`;
+        });
+    }
+
+    function addStep() {
+        const list = document.getElementById('stepList');
+        const idx = list.children.length + 1;
+        const row = document.createElement('div');
+        row.className = 'step-row';
+        row.innerHTML = `
+            <span class="step-number">${idx}</span>
+            <div style="margin-top:6px">
+                <label>Заголовок шага</label>
+                <input type="text" name="step_title_${idx}" placeholder="Шаг ${idx}">
+            </div>
+            <div>
+                <label>Описание</label>
+                <textarea name="step_desc_${idx}" rows="2" placeholder="Подробно опишите, что нужно сделать…"></textarea>
+            </div>
+            <button type="button" class="btn btn-danger" style="position:absolute;top:12px;right:12px" onclick="removeStep(this)" title="Удалить шаг">✕</button>`;
+        list.appendChild(row);
+        row.querySelector('input').focus();
+    }
+
+    function removeStep(btn) {
+        const row = btn.closest('.step-row');
+        const list = document.getElementById('stepList');
+        if (list.children.length > 1) {
+            row.style.opacity = '0';
+            row.style.transform = 'translateX(20px)';
+            row.style.transition = 'all .2s';
+            setTimeout(() => {
+                row.remove();
+                renumberSteps();
+            }, 200);
+        }
+    }
+
+    function renumberSteps() {
+        const list = document.getElementById('stepList');
+        Array.from(list.children).forEach((row, i) => {
+            const num = i + 1;
+            row.querySelector('.step-number').textContent = num;
+            const titleInput = row.querySelector('input[name^="step_title_"]');
+            const descTextarea = row.querySelector('textarea[name^="step_desc_"]');
+            if (titleInput) titleInput.name = `step_title_${num}`;
+            if (descTextarea) descTextarea.name = `step_desc_${num}`;
+        });
+    }
+
+
+</script>
+
+</body>
+</html>

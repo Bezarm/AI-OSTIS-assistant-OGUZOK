@@ -7,13 +7,15 @@ from sc_client.models import ScTemplate
 import random
 from pathlib import Path
 from classifier import MessageClassifier
+import re
 
 class Operator():
     def __init__(self):
         self.userpath = Path(__file__).parent.parent/'knowledge_base'/'users'/'telegram'
+        self.recpath = Path(__file__).parent.parent/'knowledge_base'/'oguzok'/'recipes'
         self.mc = MessageClassifier()
     
-    def _get_name(self, addr):
+    def get_name(self, addr):
         template2 = ScTemplate()
         template2.quintuple(
             addr,
@@ -78,7 +80,111 @@ class Operator():
             sc_type.VAR_PERM_POS_ARC,
             ScKeynodes['nrel_recipe_step_description']
         )
-        return f"<b>{self._get_name(addr)}</b>\n\n{c.get_link_content(c.search_by_template(template)[0].get('_descr'))[0].data}"
+        return f"<b>{self.get_name(addr)}</b>\n\n{c.get_link_content(c.search_by_template(template)[0].get('_descr'))[0].data}"
+
+    def get_rec_pref(self, tg_id: int):
+        user = ScKeynodes[str(tg_id)]
+        template = ScTemplate()
+        template.quintuple(
+            user,
+            sc_type.VAR_COMMON_ARC,
+            sc_type.VAR_NODE >> '_rec',
+            sc_type.VAR_PERM_POS_ARC,
+            ScKeynodes['nrel_liked_recipe']
+        )
+        return [get_element_system_identifier(rec.get('_rec')) for rec in c.search_by_template(template)]
+
+    def add_rec_pref(self, tg_id: int, name: str, recipe: str):
+        user = ScKeynodes[str(tg_id)]
+        template = ScTemplate()
+        template.quintuple(
+            user,
+            sc_type.VAR_COMMON_ARC,
+            sc_type.VAR_NODE >> '_rec',
+            sc_type.VAR_PERM_POS_ARC,
+            ScKeynodes['nrel_liked_recipe']
+        )
+        scs_recs = "=> nrel_liked_recipe:\n"
+        for rec in c.search_by_template(template):
+            scs_recs += f"  {get_element_system_identifier(rec.get('_rec'))};\n"
+        template2 = ScTemplate()
+        template2.quintuple(
+            user,
+            sc_type.VAR_COMMON_ARC,
+            ScKeynodes[recipe],
+            sc_type.VAR_PERM_POS_ARC,
+            ScKeynodes['nrel_liked_recipe']
+        )
+        c.generate_by_template(template2)
+        scs_recs += f"  {recipe};;\n"
+        scs = f"""{tg_id}
+<- concept_user;
+=> nrel_full_name:
+    [{name}];
+=> nrel_user_id:
+    [{tg_id}];
+{scs_recs}"""
+        with open(self.userpath/f'{tg_id}.scs', 'w') as file:
+            file.write(scs)
+    
+    def add_recipe(self, dct):
+        ingrs=""
+        for d in dct['ingrs']:
+            ingrs+=f"""    {dct['sid']}_{d['name']}
+    (*
+        <- {d['name']};;
+        => nrel_amount: [{d['amount']}];;
+        => nrel_type_of_unit: [{d['unit']}] (* <- lang_ru;; *);;
+    *);\n"""
+        sl = ""
+        steps = ""
+        for i, d in enumerate(dct['steps']):
+            sl+=f"   ..step{i+1};\n"
+            steps+=f"""..step{i+1}
+    <- concept_recipe_step;
+    => nrel_main_idtf:
+    [{d['title']}]
+    (* <- lang_ru;; *);
+    => nrel_recipe_step_description:
+    [{d['description']}]
+    (* <- lang_ru;; *);;\n\n"""
+            
+        scs = f"""{dct['sid']}
+
+<- concept_recipe;
+
+=> nrel_main_idtf:
+    [{dct['name']}]
+    (* <- lang_ru;; *);
+
+=> nrel_time_of_cooking:
+    [{dct['time']}]
+    (* <- lang_ru;; *);
+
+=> nrel_calorific_value:
+    [{dct['calories']}]
+    (* <- lang_ru;; *);
+
+=> nrel_count_of_portions:
+    [{dct['portions']}]
+    (* <- lang_ru;; *);
+
+=> nrel_dificulty_of_cooking:
+    [{dct['difficulty']}]
+    (* <- lang_ru;; *);
+
+=> nrel_has_ingredient:
+{ingrs}
+
+=> nrel_recipe_step: <
+{sl[:-2]}
+>;;
+
+{steps}"""
+        c.generate_elements_by_scs([scs])
+        with open(self.recpath/f'{dct['sid']}.scs', 'w') as file:
+            file.write(scs)
+        
 
     def handle_message(self, tg_id: int, name: str, message: str):
         clasif, entities = self.mc.classify(message)
@@ -98,7 +204,7 @@ class Operator():
             case 5:
                 return 5, self.ingr_view(tg_id), None
             case 8:
-                return 8, self.search_by_ingrs(tg_id), None
+                return 8, *self.search_by_ingrs(tg_id)
             case 9:
                 return 9, self.recipe_select(entities), entities
             # case _:
@@ -132,7 +238,7 @@ class Operator():
         result = c.search_by_template(template)
         answer = "🤖 <b>Я могу:</b>\n\n"
         for skill in result:
-            answer+=f"  ▸ {self._get_name(skill.get('_skill'))}\n"
+            answer+=f"  ▸ {self.get_name(skill.get('_skill'))}\n"
         return answer
 
     def ingr_add(self, tg_id, entities):
@@ -154,7 +260,7 @@ class Operator():
                     is_rep = True
                 else:
                     c.generate_by_template(template)
-                    names.append(self._get_name(ingr))
+                    names.append(self.get_name(ingr))
         if names:
             items = ', '.join(names)
             return f"✅ <b>Добавлено:</b> {items}"
@@ -181,7 +287,7 @@ class Operator():
                 )
                 if len(c.search_by_template(template)) > 0:
                     c.erase_elements(c.search_by_template(template)[0].get('_has'))
-                    names.append(self._get_name(ingr))
+                    names.append(self.get_name(ingr))
                 else:
                     is_o = True
         if names:
@@ -191,6 +297,26 @@ class Operator():
             return f"🤨 Кажется, этого у вас и не было."
         else:
             return self.unknown_message()
+    
+    def ingr_all_del(self, tg_id):
+        names = []
+        user = ScKeynodes[str(tg_id)]
+        template = ScTemplate()
+        template.quintuple(
+            user,
+            sc_type.VAR_COMMON_ARC >> '_has',
+            sc_type.VAR_NODE >> '_ingr',
+            sc_type.VAR_PERM_POS_ARC,
+            ScKeynodes['nrel_has']
+        )
+        for ingr in c.search_by_template(template):
+            c.erase_elements(ingr.get('_has'))
+            names.append(self.get_name(ingr.get('_ingr')))
+        if names:
+            items = ', '.join(names)
+            return f"🗑️ <b>Убрано:</b> {items}"
+        else:
+            return f"🗑️ У тебя и так ничего нет"
 
     def ingr_view(self, tg_id):
         user = ScKeynodes[str(tg_id)]
@@ -202,7 +328,7 @@ class Operator():
             sc_type.VAR_PERM_POS_ARC,
             ScKeynodes['nrel_has']
         )
-        names = [self._get_name(temp.get('_ingr')) for temp in c.search_by_template(template)]
+        names = [self.get_name(temp.get('_ingr')) for temp in c.search_by_template(template)]
         if names:
             items = ', '.join(names)
             return f"🛒 <b>Твои ингредиенты:</b>\n{items}"
@@ -216,7 +342,7 @@ class Operator():
         for ent in entities:
             recipe = ScKeynodes.get(str(ent))
             if recipe.is_valid():
-                name = self._get_name(recipe)
+                name = self.get_name(recipe)
                 answer += f"📖 <b>{name}</b>\n\n"
                 # Время приготовления
                 template = ScTemplate()
@@ -296,11 +422,11 @@ class Operator():
                     unit = c.get_link_content(c.search_by_template(template_ingr3)[0].get('_unit'))[0].data
                     template_concept = ScTemplate()
                     template_concept.triple(
-                    sc_type.VAR_NODE >> '_ingr',
+                        sc_type.VAR_NODE >> '_ingr',
                         sc_type.VAR_POS_ARC,
                         ringr.get('_ingr_inst'),
                     )
-                    name = self._get_name(c.search_by_template(template_concept)[0].get('_ingr'))
+                    name = self.get_name(c.search_by_template(template_concept)[0].get('_ingr'))
                     answer += f"🔷 {name}: <i>{amount} {unit}</i>\n"
                 answer += "\n"
         if answer:
@@ -320,7 +446,7 @@ class Operator():
         )
         user_ingr_addrs = set(t.get('_ingr') for t in c.search_by_template(template))
         if not user_ingr_addrs:
-            return "📭 У тебя пока нет ингредиентов. Добавь их, написав, например: <i>\"Добавь яйца\"</i>"
+            return "📭 У тебя пока нет ингредиентов. Добавь их, написав, например: <i>\"Добавь яйца\"</i>", []
 
         concept_recipe = ScKeynodes['concept_recipe']
         template_rec = ScTemplate()
@@ -362,24 +488,19 @@ class Operator():
                 matching_recipes.append(recipe)
 
         if not matching_recipes:
-            return "😔 К сожалению, по твоим ингредиентам ничего не нашлось.\nПопробуй добавить ещё продуктов!"
+            return "😔 К сожалению, по твоим ингредиентам ничего не нашлось.\nПопробуй добавить ещё продуктов!", []
 
         answer = "🔍 <b>Найденные рецепты:</b>\n\n"
+        names = []
         for recipe in matching_recipes:
-            answer += f"  ◆ <b>{self._get_name(recipe)}</b>\n"
-        return answer
+            names.append(self.get_name(recipe))
+            answer += f"  ◆ <b>{self.get_name(recipe)}</b>\n"
+        return answer, names
 
 class Connector():
     def safe_connect(self, url):
         if not c.is_connected():
             c.connect(url)
-        
-            c.set_reconnect_handler(
-                reconnect_handler=c.connect,
-                post_reconnect_handler=None,
-                reconnect_retries=5,
-                reconnect_retry_delay=1.0
-            )
     
     def __del__(self):
         c.disconnect()

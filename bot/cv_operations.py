@@ -68,7 +68,7 @@ UNIFIED_CLASSES = [
 
 _YOLO_TO_KB_INGR = {
     "egg":           "egg",
-    "potato":        "potapo",
+    "potato":        "potato",
     "onion":         "onion",
     "sugar":         "sugar",
     "carrot":        "carrot",
@@ -104,7 +104,7 @@ class Model():
                 result.append(kb_id)
         return result
 
-    def analyze(self, file_bytes, conf=0.03):
+    def analyze(self, file_bytes, conf=0.15):
         # img = imread(path)
         # data, bbox, straight_qrcode = self.detector.detectAndDecode(img)
         # if data:

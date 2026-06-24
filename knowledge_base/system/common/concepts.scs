@@ -82,6 +82,17 @@ nrel_has
         <- lang_ru;;
     *);;
 
+nrel_liked_recipe
+<- sc_node_non_role_relation;
+<- concept_non_role_relation;
+<- concept_binary_relation;
+<- concept_ingredient_relation;
+=> nrel_main_idtf:
+    [Понравился рецепт]
+    (*
+        <- lang_ru;;
+    *);;
+
 nrel_main_idtf
 <- sc_node_non_role_relation;
 <- concept_non_role_relation;

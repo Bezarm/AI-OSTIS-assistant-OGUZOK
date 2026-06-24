@@ -6,23 +6,25 @@
     <title>OGUZOK — Новый рецепт</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         :root {
-            --bg:        #0f0f12;
-            --surface:   #1a1a22;
-            --surface-2: #22222e;
-            --border:    #2e2e3e;
-            --accent:    #0b6df5;
-            --accent-2:  #3c8ffb;
-            --text:      #f0f0f5;
-            --text-dim:  #9ca3af;
-            --danger:    #ef4444;
-            --success:   #22c55e;
-            --radius:    14px;
-            --radius-sm: 10px;
-            --shadow:    0 8px 32px rgba(0,0,0,.45);
+            --bg:             var(--tg-theme-bg-color, #0f0f12);
+            --surface:        var(--tg-theme-section-bg-color, #1a1a22);
+            --surface-2:      var(--tg-theme-secondary-bg-color, #22222e);
+            --border:         var(--tg-theme-section-separator-color, #2e2e3e);
+            --accent:         var(--tg-theme-button-color, #0b6df5);
+            --accent-2:       var(--tg-theme-accent-text-color, #3c8ffb);
+            --text:           var(--tg-theme-text-color, #f0f0f5);
+            --text-dim:       var(--tg-theme-hint-color, #9ca3af);
+            --btn-text:       var(--tg-theme-button-text-color, #ffffff);
+            --danger:         var(--tg-theme-destructive-text-color, #ef4444);
+            --link:           var(--tg-theme-link-color, #3c8ffb);
+            --radius:         14px;
+            --radius-sm:      10px;
+            --shadow:         0 8px 32px rgba(0,0,0,.25);
         }
 
         body {
@@ -30,10 +32,12 @@
             background: var(--bg);
             color: var(--text);
             min-height: 100vh;
+            min-height: var(--tg-viewport-height, 100vh);
             display: flex;
             justify-content: center;
-            padding: 40px 16px 80px;
+            padding: 16px 16px calc(80px + var(--tg-content-safe-area-inset-bottom, 0px));
             line-height: 1.6;
+            margin: 0;
         }
 
         /* ─── Background Decoration ─────────────────────────── */
@@ -42,8 +46,9 @@
             position: fixed;
             inset: 0;
             background:
-                radial-gradient(ellipse 600px 400px at 20% 10%, rgba(245,158,11,.08), transparent),
-                radial-gradient(ellipse 500px 500px at 80% 80%, rgba(251,146,60,.06), transparent);
+                radial-gradient(ellipse 600px 400px at 20% 10%, var(--accent), transparent 50%),
+                radial-gradient(ellipse 500px 500px at 80% 80%, var(--link), transparent 50%);
+            opacity: 0.06;
             pointer-events: none;
             z-index: 0;
         }
@@ -70,10 +75,7 @@
         .form-header h1 {
             font-size: 28px;
             font-weight: 800;
-            background: linear-gradient(135deg, var(--accent), var(--accent-2));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--text);
         }
 
         .form-header p {
@@ -87,13 +89,10 @@
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 32px;
-            margin-bottom: 20px;
-            box-shadow: var(--shadow);
+            padding: 24px 20px;
+            margin-bottom: 16px;
             transition: border-color .25s;
         }
-
-        .card:hover { border-color: #3a3a50; }
 
         .card-title {
             font-size: 16px;
@@ -140,12 +139,12 @@
 
         input:focus, select:focus, textarea:focus {
             border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(245,158,11,.15);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 15%, transparent);
         }
 
         textarea { resize: vertical; min-height: 80px; }
 
-        input::placeholder, textarea::placeholder { color: #555568; }
+        input::placeholder, textarea::placeholder { color: var(--text-dim); opacity: .5; }
 
         select { cursor: pointer; appearance: none; }
 
@@ -197,7 +196,7 @@
             top: -10px;
             left: 14px;
             background: var(--accent);
-            color: #000;
+            color: var(--btn-text);
             font-size: 12px;
             font-weight: 800;
             padding: 2px 10px;
@@ -229,7 +228,7 @@
         .btn-ghost:hover {
             border-color: var(--accent);
             color: var(--accent);
-            background: rgba(245,158,11,.06);
+            background: var(--surface-2);
         }
 
         .btn-danger {
@@ -241,28 +240,28 @@
             line-height: 1;
         }
         .btn-danger:hover {
-            background: rgba(239,68,68,.12);
+            background: var(--surface-2);
         }
 
         .btn-submit {
             width: 100%;
             justify-content: center;
-            background: linear-gradient(135deg, var(--accent), var(--accent-2));
-            color: #000;
+            background: var(--accent);
+            color: var(--btn-text);
             font-size: 16px;
             font-weight: 700;
             padding: 14px 24px;
             border: none;
             border-radius: var(--radius);
             cursor: pointer;
-            transition: transform .15s, box-shadow .2s;
-            box-shadow: 0 4px 20px rgba(245,158,11,.25);
+            transition: transform .15s, opacity .15s;
+            -webkit-tap-highlight-color: transparent;
         }
         .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 28px rgba(245,158,11,.35);
+            transform: translateY(-1px);
+            opacity: .92;
         }
-        .btn-submit:active { transform: translateY(0); }
+        .btn-submit:active { transform: translateY(0); opacity: .85; }
 
         /* ─── Helpers ───────────────────────────────────────── */
         .mt-12 { margin-top: 12px; }
@@ -523,6 +522,39 @@
     }
 
 
+</script>
+
+<script>
+    function applyTheme(tp) {
+        const r = document.documentElement.style;
+        const map = {
+            'bg_color':              '--tg-theme-bg-color',
+            'text_color':            '--tg-theme-text-color',
+            'hint_color':            '--tg-theme-hint-color',
+            'link_color':            '--tg-theme-link-color',
+            'button_color':          '--tg-theme-button-color',
+            'button_text_color':     '--tg-theme-button-text-color',
+            'secondary_bg_color':    '--tg-theme-secondary-bg-color',
+            'header_bg_color':       '--tg-theme-header-bg-color',
+            'accent_text_color':     '--tg-theme-accent-text-color',
+            'section_bg_color':      '--tg-theme-section-bg-color',
+            'section_header_text_color': '--tg-theme-section-header-text-color',
+            'section_separator_color':   '--tg-theme-section-separator-color',
+            'subtitle_text_color':       '--tg-theme-subtitle-text-color',
+            'destructive_text_color':    '--tg-theme-destructive-text-color',
+        };
+        for (const [key, cssVar] of Object.entries(map)) {
+            if (tp[key]) r.setProperty(cssVar, tp[key]);
+        }
+    }
+
+    if (window.Telegram && window.Telegram.WebApp) {
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        tg.ready();
+        if (tg.themeParams) applyTheme(tg.themeParams);
+        tg.onEvent('themeChanged', () => applyTheme(tg.themeParams));
+    }
 </script>
 
 </body>

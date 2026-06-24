@@ -7,6 +7,7 @@ logs.log
 
 config.py
 computer_vision_polygon/models/
+computer_vision_polygon/for_train/
 runs/
 test.py
 
